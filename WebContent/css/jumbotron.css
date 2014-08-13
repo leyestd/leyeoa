@@ -1,0 +1,62 @@
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+
+.divcss {
+    width:290px;height:500px; overflow-y:scroll; border:1px solid #CCCCCC;
+    padding: 20px;
+}
+.cdivcss {
+    width:240px;height:500px; overflow-y:scroll; border:1px solid #CCCCCC;
+    padding: 20px;
+}
+.qdivcss {
+    width:300px;height:300px; overflow-y:scroll; border:1px solid #CCCCCC;
+    padding: 20px;
+}
+.udivcss {
+    width:240px;height:360px; overflow-y:scroll; border:1px solid #CCCCCC;
+    padding: 20px;
+}
+.formdivcss {
+    width:550px;height:500px; overflow-y:scroll; border:1px solid #CCCCCC;
+    padding: 20px;
+}
+.libgcl {
+	background-color: #DEEFFF;
+}
+
+#droleuser li li ,#roleuser li li {
+	
+}
+
+#droleuser li li:hover ,#roleuser li li:hover ,#user li:hover,#role li:hover,#permission li:hover{
+	background-color: #F7F7F7;
+}
+
+#drolepermission li li {
+	
+}
+
+#drolepermission li li:hover {
+	background-color: #F7F7F7;
+}
+
+#rolelist li:hover {
+	background-color: #F7F7F7;
+}
+
+#ownedrole li:hover {
+	background-color: #F7F7F7;
+}
+
+#activeflows li:hover {
+	background-color: #F7F7F7;
+}
+
+#allflows li:hover {
+	background-color: #F7F7F7;
+}
+

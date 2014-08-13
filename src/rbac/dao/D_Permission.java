@@ -1,0 +1,132 @@
+package rbac.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import rbac.javabean.AccountPermissionRole;
+import database.ConnectionPool;
+import database.DBUtil;
+
+public class D_Permission {
+	public static int doCreate(String name,String alias) {
+	    ConnectionPool pool = ConnectionPool.getInstance();
+	    Connection connection = pool.getConnection();
+	    PreparedStatement ps=null;
+	    int count=0;
+	    String query = "INSERT INTO permission (name,alias) VALUES (?,?)";
+	    try {
+	    	ps = connection.prepareStatement(query);
+	    	ps.setString(1, name);
+	    	ps.setString(2, alias);
+	    	count=ps.executeUpdate();
+	    }
+	    catch(SQLException e)
+	    {
+	        e.printStackTrace();
+	        return 0;
+	    }
+	    finally
+	    {
+	        DBUtil.closePreparedStatement(ps);
+	        pool.freeConnection(connection);
+	    }
+	    return count;
+	}	
+	
+	public static AccountPermissionRole doSelect(String name) {
+		ConnectionPool pool = ConnectionPool.getInstance();
+	    Connection connection = pool.getConnection();
+	    PreparedStatement ps=null;
+	    ResultSet rs=null;
+	    
+	    AccountPermissionRole role=null;
+	    String query = "SELECT id,name,alias FROM permission WHERE name=?";
+	    
+	    try {
+	    	ps = connection.prepareStatement(query);
+	    	ps.setString(1, name);
+	    	rs=ps.executeQuery();
+	    	if(rs.next()) {
+	    		role=new AccountPermissionRole();
+	    		role.setId(Integer.valueOf(rs.getInt("id")));
+	    		role.setName(rs.getString("name"));
+	    		role.setAlias(rs.getString("alias"));
+	    	}
+	    	return role;
+	    }
+	    catch(SQLException e)
+	    {
+	        e.printStackTrace();
+	        return null;
+	    }
+	    finally
+	    {	DBUtil.closeResultSet(rs);
+	        DBUtil.closePreparedStatement(ps);
+	        pool.freeConnection(connection);
+	    }
+	}
+	
+	public static int doUpdate(String name,String alias,String oldName) {
+	    ConnectionPool pool = ConnectionPool.getInstance();
+	    Connection connection = pool.getConnection();
+	    PreparedStatement ps=null;
+	    int count=0;
+	    String query = "UPDATE permission SET name =?,alias=? WHERE name=?";
+	    try {
+	    	ps = connection.prepareStatement(query);
+	    	ps.setString(1, name);
+	    	ps.setString(2, alias);
+	    	ps.setString(3,oldName);
+	    	count=ps.executeUpdate();
+	    }
+	    catch(SQLException e)
+	    {
+	        e.printStackTrace();
+	        return 0;
+	    }
+	    finally
+	    {
+	        DBUtil.closePreparedStatement(ps);
+	        pool.freeConnection(connection);
+	    }
+	    return count;
+	}
+	
+	public static ArrayList<AccountPermissionRole> doSelectAll() {
+		ConnectionPool pool = ConnectionPool.getInstance();
+	    Connection connection = pool.getConnection();
+	    PreparedStatement ps=null;
+	    ResultSet rs=null;
+	    ArrayList<AccountPermissionRole> permissions=new ArrayList<AccountPermissionRole>();
+	    AccountPermissionRole permission;
+	    String query = "SELECT id,name,alias FROM permission";
+	    
+	    try {
+	    	ps = connection.prepareStatement(query);
+	    	rs=ps.executeQuery();
+	    	while(rs.next()) {
+	    		permission=new AccountPermissionRole();;
+	    		permission.setId(Integer.valueOf(rs.getInt("id")));
+	    		permission.setName(rs.getString("name"));
+	    		permission.setAlias(rs.getString("alias"));
+	    		permissions.add(permission);
+	    	}
+	    	return permissions;
+	    }
+	    catch(SQLException e)
+	    {
+	        e.printStackTrace();
+	        return null;
+	    }
+	    finally
+	    {	DBUtil.closeResultSet(rs);
+	        DBUtil.closePreparedStatement(ps);
+	        pool.freeConnection(connection);
+	    }
+	}
+	
+	
+}
