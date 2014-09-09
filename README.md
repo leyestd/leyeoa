@@ -13,3 +13,5 @@ Love your neighbor as yourself.
 运行你的项目
 
 初始用户名密码 administrator 12345678
+
+初始的用色和用户不要删掉，因为是系统初始信息，本系统以RABC和工作流结合，请注意用户-角色-操作的关联。。。。。
