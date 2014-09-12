@@ -10,6 +10,8 @@ Love your neighbor as yourself.
 
 项目导入tomcat ,把.sql导入数据库，初始密码为12345678
 
+在WebContent/META-INF/context.xml 修改数据库的连接
+
 运行你的项目
 
 初始用户名密码 administrator 12345678
