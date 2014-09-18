@@ -29,7 +29,14 @@ public class UserLogin extends HttpServlet {
 		String password = request.getParameter("password");
 		HttpSession session = request.getSession();
 		String checkLogin = "重试";
-
+		
+		String ipaddress;
+		if (request.getHeader("x-forwarded-for") == null) {
+			ipaddress = request.getRemoteAddr();
+		} else {
+			ipaddress = request.getHeader("x-forwarded-for");
+		}
+		
 		if (username != null && password != null) {
 			int id = D_Login.doCheckPassword(username, password);
 			Limit limit = D_LoginLimit.doSelectLimit(username);
@@ -45,6 +52,7 @@ public class UserLogin extends HttpServlet {
 					} else {
 						response.sendRedirect("frontend/nworkform");
 					}
+					getServletContext().log("IP: "+ipaddress+" 登入成功: "+username);
 					return;
 				}else if (limit.getNumber() < 5) {
 					session.setAttribute("id", id);
@@ -67,13 +75,6 @@ public class UserLogin extends HttpServlet {
 						checkLogin = "已锁定";
 					}
 				} else {
-					String ipaddress;
-					if (request.getHeader("x-forwarded-for") == null) {
-						ipaddress = request.getRemoteAddr();
-					} else {
-						ipaddress = request.getHeader("x-forwarded-for");
-					}
-
 					D_LoginLimit.doCreate(ipaddress, username, 1);
 				}
 
@@ -82,7 +83,13 @@ public class UserLogin extends HttpServlet {
 			session.invalidate();
 			checkLogin = "登入";
 		}
+		
 
+		
+		if(username != null) {
+			getServletContext().log("IP: "+ipaddress+" 登入失败: "+username+" 状态: "+checkLogin);
+		}
+		
 		request.setAttribute("checkLogin", checkLogin);
 		String url = "/index.jsp";
 		RequestDispatcher dispatcher = getServletContext()
