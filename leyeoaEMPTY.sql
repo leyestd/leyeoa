@@ -45,7 +45,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'administrator','$2a$10$742lzemjXFKR0h4NRZapNexI0rNRoqOPZ4RUeflh5BxHYIvLxGjvq','管理员','303650172@qq.com',1,1);
+INSERT INTO `account` VALUES (1,'administrator','$2a$10$rxA5BuIvW64dstcbZLXR8OKMGKLnro4nsgrVKvGVHgoPp/poxASLG','管理员','303650172@qq.com',1,1);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 

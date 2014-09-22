@@ -83,5 +83,8 @@ String aa="3";
 	String a[]=aa.split(",");
 	System.out.println(a[0]);
 	System.out.println(a.length);
+	String hashed = BCrypt.hashpw("12345678",
+			BCrypt.gensalt());
+	System.out.println(hashed);
 	}
 }
