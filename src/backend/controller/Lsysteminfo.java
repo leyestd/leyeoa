@@ -79,7 +79,7 @@ public class Lsysteminfo extends HttpServlet {
 		if(!rbacAccountkey.equals("")){
 			rbacAccountkey=" WHERE id NOT IN ("+rbacAccountkey.substring(0, rbacAccountkey.length()-1)+")";
 		}
-		problemInfo[2]=D_SystemInfo.problemRbacAccount(rbacAccountkey);
+		problemInfo[2]=D_SystemInfo.problemRbacAccount(rbacAccountkey);  //未在系统中的用户
 		
 		
 		rbacAccountCount=rbac.size();

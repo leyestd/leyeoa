@@ -24,7 +24,7 @@ public class D_Form_Type {
 		int typeid = 0;
 		int formid = 0;
 
-		String query = "SELECT formtype.id,formtype.name,workform.id,workform.name From formtype INNER JOIN workform ON formtype.id=workform.type_id";
+		String query = "SELECT formtype.id,formtype.name,workform.id,workform.name From formtype INNER JOIN workform ON formtype.id=workform.type_id ORDER BY formtype.id";
 
 		try {
 			ps = connection.prepareStatement(query);
