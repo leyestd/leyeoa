@@ -33,19 +33,19 @@ public class Rworkflow extends HttpServlet {
 		boolean approval=false;
 		int approvalRoleId=0;
 		
-		//如果我有approval角色
+		//如果用户有approval角色
 		if(rbac.get(accountid).getRole().contains("Approval")) {
 			approval=true;
 		}else {
 			Set<Integer> roleskey = roles.keySet();
 			for (Integer key : roleskey) {
-				//System.out.println(roles.get(key).getName());
+				//可审批角色ID存起来备用
 				if(roles.get(key).getName().equals("Approval"))	{
 					approvalRoleId=key;
 					break;
 				}
 			}
-			//System.out.println(approvalRoleId);
+			//可审批角色下的角色内的用户是否有当前用户
 			if(approvalRoleId != 0) {
 				ArrayList<Integer> basicRole=D_Role_Hierarchy.doSelectAdvanced(approvalRoleId);
 				for(int id : basicRole) {
