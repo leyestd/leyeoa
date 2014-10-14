@@ -568,4 +568,24 @@
     <servlet-name>ProleHierarchyTree</servlet-name>
     <url-pattern>/rbac/prolehierarchytree</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Cdepartment</display-name>
+    <servlet-name>Cdepartment</servlet-name>
+    <servlet-class>rbac.controller.Cdepartment</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Cdepartment</servlet-name>
+    <url-pattern>/rbac/cdepartment</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Ldepartment</display-name>
+    <servlet-name>Ldepartment</servlet-name>
+    <servlet-class>rbac.controller.Ldepartment</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Ldepartment</servlet-name>
+    <url-pattern>/rbac/ldepartment</url-pattern>
+  </servlet-mapping>
 </web-app>

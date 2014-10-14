@@ -84,10 +84,13 @@
                                 <li class="divider"></li>
                                 <li><a href="<%=basePath+"rbac/crole" %>">添加角色</a></li>
                                 <li><a href="<%=basePath+"rbac/lrole" %>">列出角色</a></li>
-                                <li><a href="<%=basePath+"rbac/prolehierarchytree" %>">列出层次</a></li>
                                 <li class="divider"></li>
                                 <li><a href="<%=basePath+"rbac/cpermission" %>">添加操作</a></li>
                                 <li><a href="<%=basePath+"rbac/lpermission" %>">列出操作</a></li>
+                                <li class="divider"></li>
+                                <li><a href="<%=basePath+"rbac/cdepartment" %>">添加部门</a></li>
+                                <li><a href="<%=basePath+"rbac/ldepartment" %>">列出部门</a></li>
+                                <li><a href="<%=basePath+"rbac/prolehierarchytree" %>">列出层次</a></li>
                                 <li class="divider"></li>
                                 <li><a href="<%=basePath+"rbac/crelationship" %>">添加关系</a></li>
                                 <li><a href="<%=basePath+"rbac/drelationship" %>">删除关系</a></li>

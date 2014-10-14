@@ -48,6 +48,10 @@ body {
 	background-color: #F7F7F7;
 }
 
+#departmentlist li:hover {
+	background-color: #F7F7F7;
+}
+
 #ownedrole li:hover {
 	background-color: #F7F7F7;
 }
