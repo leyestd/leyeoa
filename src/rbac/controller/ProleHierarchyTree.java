@@ -32,7 +32,7 @@ public class ProleHierarchyTree extends HttpServlet {
 				sb.append("</ul>");
 			}
 		}
-		
+	
 		String hierarchytree=sb.toString();
 		request.setAttribute("hierarchytree",hierarchytree);
 		String url = "/WEB-INF/rbac/prolehierarchytree.jsp";
