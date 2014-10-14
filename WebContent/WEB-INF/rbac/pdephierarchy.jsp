@@ -11,7 +11,7 @@
 
 		<div class="col-md-12">
 
-			<h2 class="sub-header">角色层次</h2>
+			<h2 class="sub-header">部门层次</h2>
 			<div id="rbactree">
 			<%
 				String tt=(String)request.getAttribute("hierarchytree");

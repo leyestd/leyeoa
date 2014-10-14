@@ -19,7 +19,7 @@ public class UroleHierarchy extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String roleid=request.getParameter("roleid");
 		String advancedid=request.getParameter("advancedid");
-		System.out.println("felwfwef");
+
 	    response.setCharacterEncoding("UTF-8");  
 	    response.setContentType("text/plain; charset=utf-8"); 
 		PrintWriter out = response.getWriter();

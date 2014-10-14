@@ -43,9 +43,9 @@
 							<%
 								}
 							%>
-							<td><a href="udepartment?departmentName=<%=row.get(1) %>"><span
+							<td><a href="udepartment?departmentId=<%=row.get(0) %>"><span
 									class="glyphicon glyphicon-pencil"></span></a> &nbsp; <a
-								data-uname="<%=row.get(0)%>" href="#"><span
+								data-depid="<%=row.get(0)%>" href="#"><span
 									class="glyphicon glyphicon-remove"></span></a></td>
 						</tr>
 
@@ -141,13 +141,13 @@
 	$(".glyphicon-remove").parent().on("click", function() {
 		var confirm_ = confirm("您确认要删除?");
 		if (confirm_) {
-			var uname = $(this).data("uname");
-			var role = $(this).parent().parent();
+			var depid = $(this).data("depid");
+			var department = $(this).parent().parent();
 			$.post("ddepartment", {
-				uname : uname
+				depid : depid
 			}, function(data) {
 				if (data == "ok") {
-					role.remove();
+					department.remove();
 				} else {
 					alert("删除失败，您有部门关系存在");
 				}

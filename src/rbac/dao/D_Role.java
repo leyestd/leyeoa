@@ -99,7 +99,7 @@ public class D_Role {
 	    	rs=ps.executeQuery();
 	    	if(rs.next()) {
 	    		role=new AccountPermissionRole();
-	    		role.setId(Integer.valueOf(rs.getInt("id")));
+	    		role.setId(rs.getInt("id"));
 	    		role.setName(rs.getString("name"));
 	    		role.setAlias(rs.getString("alias"));
 	    	}

@@ -90,6 +90,7 @@
                                 <li class="divider"></li>
                                 <li><a href="<%=basePath+"rbac/cdepartment" %>">添加部门</a></li>
                                 <li><a href="<%=basePath+"rbac/ldepartment" %>">列出部门</a></li>
+                                <li><a href="<%=basePath+"rbac/pdephierarchy" %>">部门层次</a></li>
                                 <li><a href="<%=basePath+"rbac/prolehierarchytree" %>">列出层次</a></li>
                                 <li class="divider"></li>
                                 <li><a href="<%=basePath+"rbac/crelationship" %>">添加关系</a></li>

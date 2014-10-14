@@ -48,8 +48,9 @@ public class Cdepartment extends HttpServlet {
 			
 			if (checked.equals("ok")) {
 				int GeneratedId=0;
-				GeneratedId = D_Department.doCreate(name, alias,Integer.valueOf(pid ));
-				
+				synchronized (getServletContext()) {
+					GeneratedId = D_Department.doCreate(name, alias,Integer.valueOf(pid ));
+				}
 				if (GeneratedId != 0) {
 					out.print("ok"+GeneratedId);
 					return;
