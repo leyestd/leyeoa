@@ -14,14 +14,14 @@ import database.DBUtil;
 
 public class D_Account {
 
-	public static int doCreate(String username,String password,String email,String fullname,int enabled,int default_roleid) {
+	public static int doCreate(String username,String password,String email,String fullname,int enabled,int default_roleid,int default_depid) {
 	    ConnectionPool pool = ConnectionPool.getInstance();
 	    Connection connection = pool.getConnection();
 	    PreparedStatement ps=null;
 	    PreparedStatement ps2=null;
 	    ResultSet rs=null;
 	    int count=0;
-	    String query = "INSERT INTO account (username,password,fullname,email,enabled,default_roleid) VALUES (?,?,?,?,?,?)";
+	    String query = "INSERT INTO account (username,password,fullname,email,enabled,default_roleid,department_id) VALUES (?,?,?,?,?,?,?)";
 	    String query2 = "INSERT INTO account_role (account_id,role_id) VALUES (?,?)";
 	    try {
 	    	connection.setAutoCommit(false);
@@ -32,6 +32,7 @@ public class D_Account {
 	    	ps.setString(4, email);
 	    	ps.setInt(5, enabled);
 	    	ps.setInt(6, default_roleid);
+	    	ps.setInt(7, default_depid);
 	    	ps.executeUpdate();
 	    	rs=ps.getGeneratedKeys();
 	    	if(rs.next()){
@@ -95,7 +96,7 @@ public class D_Account {
 	    PreparedStatement ps=null;
 	    ResultSet rs=null;
 	    Account user=new Account();
-	    String query = "SELECT id,username, password, email, fullname, enabled FROM account WHERE username=?";
+	    String query = "SELECT id,username, password, email, fullname, enabled ,department_id FROM account WHERE username=?";
 	    
 	    try {
 	    	ps = connection.prepareStatement(query);
@@ -108,6 +109,7 @@ public class D_Account {
 	    		user.setEmail(rs.getString("email"));
 	    		user.setPassword(rs.getString("password"));
 	    		user.setEnable(rs.getInt("enabled"));
+	    		user.setDepid(rs.getInt("department_id"));
 	    	}
 	    	return user;
 	    }
@@ -184,5 +186,30 @@ public class D_Account {
 	        DBUtil.closePreparedStatement(ps);
 	        pool.freeConnection(connection);
 	    }
+	}
+	
+	public static int doSetDefaultDepartment(String userid,String depid) {
+	    ConnectionPool pool = ConnectionPool.getInstance();
+	    Connection connection = pool.getConnection();
+	    PreparedStatement ps=null;
+	    int count=0;
+	    String query = "UPDATE account SET department_id=? WHERE id=?";
+	    try {
+	    	ps = connection.prepareStatement(query);
+	    	ps.setInt(1, Integer.valueOf(depid));
+	    	ps.setInt(2, Integer.valueOf(userid));
+	    	count=ps.executeUpdate();
+	    }
+	    catch(SQLException e)
+	    {
+	        e.printStackTrace();
+	        return 0;
+	    }
+	    finally
+	    {
+	        DBUtil.closePreparedStatement(ps);
+	        pool.freeConnection(connection);
+	    }
+	    return count;
 	}
 }

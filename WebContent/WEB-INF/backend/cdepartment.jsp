@@ -38,6 +38,7 @@
    </div>
    <div class="col-md-6">
 			<div class="divcss" id="departmentlist">
+				<h4>上层部门</h4>
 				<ol>
 					<%
 						ArrayList<Department> deps=(ArrayList<Department>)request.getAttribute("departments");

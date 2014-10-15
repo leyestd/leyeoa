@@ -22,6 +22,7 @@ HashMap<Integer, RbacRole> roles = (HashMap<Integer, RbacRole>)getServletContext
 							<th>全名</th>
 							<th>邮箱</th>
 							<th>角色</th>
+							<th>部门</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -31,7 +32,7 @@ HashMap<Integer, RbacRole> roles = (HashMap<Integer, RbacRole>)getServletContext
 											if (rows == null) {
 						%>
 						<tr>
-							<td class="text-center"  colspan="5">没有相关记录</td>
+							<td class="text-center"  colspan="6">没有相关记录</td>
 						</tr>
 						<%
 							} else {
@@ -40,7 +41,7 @@ HashMap<Integer, RbacRole> roles = (HashMap<Integer, RbacRole>)getServletContext
 						%>
 						<tr<%=(row.get(4).toString().equals("false"))?" class=\"text-danger\"":"" %>>
 							<%
-								for (int i=0;i<row.size()-2;i++) {
+								for (int i=0;i<row.size()-3;i++) {
 							%>
 
 							<td><%=row.get(i).toString()%></td>
@@ -48,14 +49,15 @@ HashMap<Integer, RbacRole> roles = (HashMap<Integer, RbacRole>)getServletContext
 								}
 							%>
 							<%
-							int roleid=Integer.valueOf(row.get(row.size()-1).toString());
+							int roleid=Integer.valueOf(row.get(row.size()-2).toString());
 							%>
 							<td><%=roles.get(roleid).getAlias() %></td>
+							<td><%=row.get(row.size()-1) %></td>
 							<td><a href="uuser?username=<%=row.get(1)%>"><span
 									class="glyphicon glyphicon-pencil"></span></a> &nbsp; 
 									
 									<% 
-									if(row.get(row.size()-2).toString().equals("true")) {								
+									if(row.get(row.size()-3).toString().equals("true")) {								
 									%>
 									<a data-username="<%=row.get(1)%>" href="#">
 										<span class="glyphicon glyphicon-remove"></span>

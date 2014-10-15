@@ -27,10 +27,10 @@ public class Luser extends HttpServlet {
 			pageNumber = Integer.valueOf(request.getParameter("pageNumber"));
 		}
 
-		Pagination page = new Pagination(pageNumber, 18, "account","");
+		Pagination page = new Pagination(pageNumber, 18, "account INNER JOIN department ON department_id=department.id","");
 
 		if (page.getTotal() != 0) {
-			String[] columns = { "id", "username", "fullname", "email","enabled" ,"default_roleid"};
+			String[] columns = { "account.id", "username", "fullname", "email","enabled" ,"default_roleid","department.alias"};
 			List<ArrayList<Object>> rows = page.getRows(columns);
 			request.setAttribute("rows", rows);
 			request.setAttribute("pageNumber", pageNumber);

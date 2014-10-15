@@ -10,12 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import backend.dao.D_Department;
 import rbac.RbacInitialize;
 import rbac.dao.D_Account;
 import rbac.dao.D_Role;
 import rbac.inputcheck.CheckAccount;
 import rbac.javabean.Account;
 import rbac.javabean.AccountPermissionRole;
+import rbac.javabean.Department;
 import rbac.javabean.RbacAccount;
 import rbac.javabean.RbacRole;
 import security.BCrypt;
@@ -103,7 +105,10 @@ public class Uuser extends HttpServlet {
 		request.setAttribute("ownedRole", ownedRole);
 		request.setAttribute("checked", checked);
 		request.setAttribute("user", oldUser);
-
+		
+		ArrayList<Department> departments=D_Department.doSelectAllDepartment();
+		request.setAttribute("departments", departments);
+		
 		String url = "/WEB-INF/rbac/uuser.jsp";
 		RequestDispatcher dispatcher = getServletContext()
 				.getRequestDispatcher(url);

@@ -11,6 +11,7 @@ import rbac.dao.D_Role;
 import rbac.inputcheck.CheckAccount;
 import rbac.javabean.Account;
 import rbac.javabean.AccountPermissionRole;
+import rbac.javabean.Department;
 import rbac.javabean.RbacAccount;
 import rbac.javabean.RbacRole;
 import security.BCrypt;
@@ -20,6 +21,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import backend.dao.D_Department;
 
 /**
  * Servlet implementation class cuser
@@ -37,10 +40,13 @@ public class Cuser extends HttpServlet {
 		user.setFullname(request.getParameter("fullname"));
 		String default_roleid = request.getParameter("default_roleid");
 		String enable = request.getParameter("enabled");
+		String default_depid = request.getParameter("default_depid");
 
 		if (default_roleid == null) {
 			ArrayList<AccountPermissionRole> dbroles = D_Role.doSelectAll();
 			request.setAttribute("dbroles", dbroles);
+			ArrayList<Department> departments=D_Department.doSelectAllDepartment();
+			request.setAttribute("departments", departments);
 
 			String url = "/WEB-INF/rbac/cuser.jsp";
 			RequestDispatcher dispatcher = getServletContext()
@@ -52,11 +58,11 @@ public class Cuser extends HttpServlet {
 				enable = "0";
 
 			String checked = CheckAccount.doCheckNull(user, enable,
-					default_roleid);
+					default_roleid,default_depid);
 
 			if (checked.equals("ok")) {
 				enable = enable.trim();
-				checked = CheckAccount.doMatch(user, enable, default_roleid);
+				checked = CheckAccount.doMatch(user, enable, default_roleid,default_depid);
 			}
 		    response.setCharacterEncoding("UTF-8");  
 		    response.setContentType("text/plain; charset=utf-8"); 
@@ -70,7 +76,7 @@ public class Cuser extends HttpServlet {
 						BCrypt.gensalt());
 				int count = D_Account.doCreate(user.getUsername(), hashed,
 						user.getEmail(), user.getFullname(), enabled,
-						Integer.valueOf(default_roleid));
+						Integer.valueOf(default_roleid),Integer.valueOf(default_depid));
 				
 				if (count != 0) {
 					synchronized (getServletContext().getAttribute("rbac")) {

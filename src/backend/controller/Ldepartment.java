@@ -1,4 +1,4 @@
-package rbac.controller;
+package backend.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,17 +26,17 @@ public class Ldepartment extends HttpServlet {
 			pageNumber = Integer.valueOf(request.getParameter("pageNumber"));
 		}
 
-		Pagination page = new Pagination(pageNumber, 10, "department","");
+		Pagination page = new Pagination(pageNumber, 10, "department AS dep LEFT JOIN department AS pdep ON dep.pid = pdep.id","");
 
 		if (page.getTotal() != 0) {
-			String[] columns = { "id", "name", "alias" };
+			String[] columns = { "dep.id", "dep.name", "dep.alias" ,"pdep.alias"};
 			List<ArrayList<Object>> rows = page.getRows(columns);
 			request.setAttribute("rows", rows);
 			request.setAttribute("pageNumber", pageNumber);
 			request.setAttribute("countPage", page.getCountPage());
 		}
 
-		String url = "/WEB-INF/rbac/ldepartment.jsp";
+		String url = "/WEB-INF/backend/ldepartment.jsp";
 		RequestDispatcher dispatcher = getServletContext()
 				.getRequestDispatcher(url);
 		dispatcher.forward(request, response);

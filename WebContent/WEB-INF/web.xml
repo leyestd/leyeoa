@@ -628,4 +628,14 @@
     <servlet-name>PdepHierarchy</servlet-name>
     <url-pattern>/backend/pdephierarchy</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SdefaultDepartment</display-name>
+    <servlet-name>SdefaultDepartment</servlet-name>
+    <servlet-class>rbac.controller.SdefaultDepartment</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SdefaultDepartment</servlet-name>
+    <url-pattern>/rbac/sdefaultdepartment</url-pattern>
+  </servlet-mapping>
 </web-app>

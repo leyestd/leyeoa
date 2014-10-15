@@ -7,6 +7,15 @@ public class Account {
 	private String password;
 	private int id;
 	private int enable;
+	private int depid;
+
+	public int getDepid() {
+		return depid;
+	}
+
+	public void setDepid(int depid) {
+		this.depid = depid;
+	}
 
 	public Account() {	
 	}

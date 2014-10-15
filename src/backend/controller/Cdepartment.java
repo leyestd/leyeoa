@@ -24,7 +24,7 @@ public class Cdepartment extends HttpServlet {
 		String pid=request.getParameter("pid");
 
 		if (name == null || alias == null) {
-			String url = "/WEB-INF/rbac/cdepartment.jsp";
+			String url = "/WEB-INF/backend/cdepartment.jsp";
 			ArrayList<Department> departments=D_Department.doSelectAllDepartment();
 			request.setAttribute("departments", departments);
 			

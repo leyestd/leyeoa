@@ -4,7 +4,7 @@ import rbac.javabean.Account;
 import security.RegexUtil;
 
 public class CheckAccount {
-	public static String doMatch(Account user,String enable,String default_roleid) {
+	public static String doMatch(Account user,String enable,String default_roleid,String default_depid) {
 		String value="ok";
 		
 		if(!RegexUtil.isEmail(user.getEmail())) {
@@ -26,13 +26,17 @@ public class CheckAccount {
 			return "默认角色格式有误";
 		}
 		
+		if(!RegexUtil.isDigital(default_depid)) {
+			return "默认部门格式有误";
+		}
+		
 	    return value;
 	    
 	}
 	
-	public static String doCheckNull(Account user,String enable,String default_roleid) {
+	public static String doCheckNull(Account user,String enable,String default_roleid,String default_depid) {
 		String value="ok";
-		if(default_roleid == null || user.getUsername()== null || user.getPassword() == null || user.getEmail()==null || user.getFullname()==null) {
+		if(default_depid == null || default_roleid == null || user.getUsername()== null || user.getPassword() == null || user.getEmail()==null || user.getFullname()==null) {
 			return "";
 		}else {
 			user.setUsername(user.getUsername().trim());

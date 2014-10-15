@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import rbac.javabean.Department;
 import database.ConnectionPool;
@@ -65,6 +66,40 @@ public class D_Department {
 	    		dep.setAlias(rs.getString("alias"));
 	    		dep.setPid(rs.getInt("pid"));
 	    		departments.add(dep);
+	    	}
+	    	return departments;
+	    }
+	    catch(SQLException e)
+	    {
+	        e.printStackTrace();
+	        return null;
+	    }
+	    finally
+	    {	DBUtil.closeResultSet(rs);
+	        DBUtil.closePreparedStatement(ps);
+	        pool.freeConnection(connection);
+	    }
+	}
+	
+	public static HashMap<Integer,Department> doSelectAllDepartmentMap() {
+		ConnectionPool pool = ConnectionPool.getInstance();
+	    Connection connection = pool.getConnection();
+	    PreparedStatement ps=null;
+	    ResultSet rs=null;
+	    HashMap<Integer,Department> departments=new HashMap<Integer,Department>();
+	    Department dep;
+	    String query = "SELECT id,name,alias,pid FROM department";
+	    
+	    try {
+	    	ps = connection.prepareStatement(query);
+	    	rs=ps.executeQuery();
+	    	while(rs.next()) {
+	    		dep=new Department();;
+	    		dep.setId(Integer.valueOf(rs.getInt("id")));
+	    		dep.setName(rs.getString("name"));
+	    		dep.setAlias(rs.getString("alias"));
+	    		dep.setPid(rs.getInt("pid"));
+	    		departments.put(Integer.valueOf(rs.getInt("id")), dep);
 	    	}
 	    	return departments;
 	    }

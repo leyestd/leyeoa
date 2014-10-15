@@ -8,6 +8,10 @@ body {
     width:290px;height:500px; overflow-y:scroll; border:1px solid #CCCCCC;
     padding: 20px;
 }
+.rdivcss {
+    width:250px;height:500px; overflow-y:scroll; border:1px solid #CCCCCC;
+    padding: 20px;
+}
 .cdivcss {
     width:240px;height:500px; overflow-y:scroll; border:1px solid #CCCCCC;
     padding: 20px;

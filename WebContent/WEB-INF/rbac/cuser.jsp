@@ -1,6 +1,6 @@
 <%@ include file="/WEB-INF/jspf/backend/head.jsp" %>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="rbac.javabean.AccountPermissionRole,java.util.ArrayList" %>   
+<%@ page import="rbac.javabean.AccountPermissionRole,java.util.ArrayList,rbac.javabean.Department" %>   
 
 <div class="container">
 	<!-- Example row of columns -->
@@ -62,8 +62,11 @@
 	</form>
    </div>
    <div class="col-md-6">
-			<div class="divcss" id="rolelist">
-				<ol>
+   		<div class="row">
+   			<div class="col-md-6">
+				<div class="rdivcss" id="rolelist">
+					<h4>默认角色</h4>
+					<ol>
 					<%
 					ArrayList<AccountPermissionRole> roles=(ArrayList<AccountPermissionRole>)request.getAttribute("dbroles");
 					for(AccountPermissionRole role : roles)
@@ -74,9 +77,27 @@
 						}
 					%>
 
-				</ol>
+					</ol>
+				</div>
 			</div>
+			<div class="col-md-6">
+			  <div class="rdivcss" id="departmentlist">
+				<h4>默认部门</h4>
+				<ol>
+					<%
+						ArrayList<Department> deps=(ArrayList<Department>)request.getAttribute("departments");
+								for(Department dep : deps) {
+					%>
+						<li data-departmentid="<%=dep.getId()%>"><%=dep.getAlias()%></li>
+					<%
+						}
+					%>
+				</ol>
+			  </div>
+			</div>
+		</div>
 	</div>
+	
   </div>
 
 	<hr>
@@ -94,12 +115,24 @@
 <script>
 	$("#createuser").attr("disabled", "disabled");
 
-	var default_roleid;
+	var default_roleid="";
+	var default_depid="";
 	$("#rolelist li").on("click", function() {
 		default_roleid=$(this).data("roleid");
-		$("#createuser").removeAttr("disabled");
-		
+		if(default_roleid!="" && default_depid!="") {
+			$("#createuser").removeAttr("disabled");
+		}
 		$("#rolelist li").removeClass("libgcl");
+		$(this).addClass("libgcl");
+	});
+
+	$("#departmentlist li").on("click", function() {
+		default_depid=$(this).data("departmentid");
+		if(default_roleid!="" && default_depid!="") {
+			$("#createuser").removeAttr("disabled");
+		}
+		
+		$("#departmentlist li").removeClass("libgcl");
 		$(this).addClass("libgcl");
 	});
 	
@@ -111,6 +144,7 @@
 		var enabled=$("#checkenable").val();
 		
 		 $.post( "cuser", { default_roleid : default_roleid,
+			 				default_depid : default_depid,
 			 				username : username ,
 			 				password : password ,
 			 				fullname : fullname ,

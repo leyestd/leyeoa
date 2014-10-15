@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/jspf/backend/head.jsp"%>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="rbac.javabean.Account"%>
-<%@ page import="rbac.javabean.AccountPermissionRole,java.util.ArrayList"%>
+<%@ page import="rbac.javabean.AccountPermissionRole,java.util.ArrayList,rbac.javabean.Department"%>
 
 <div class="container">
 	<!-- Example row of columns -->
@@ -12,7 +12,7 @@
 	<h2 class="sub-header">修改用户</h2>
 	<form action="uuser" method="post" class="form-horizontal" role="form">
 		<div class="form-group">
-			<label for="newUsernam" class="col-md-1 control-label">账号</label>
+			<label for="newUsername" class="col-md-1 control-label">账号</label>
 			<div class="col-md-4">
 				<input name="newUsername" value="<%=user.getUsername()%>"
 					type="text" class="form-control" id="newuser" placeholder="账号">
@@ -124,10 +124,32 @@
 				</ol>
 			</div>
 		</div>
-		<div class="col-md-5">
+		<div class="col-md-1">
 			<h4>&nbsp;</h4>
 			
 			<button id="defaultr" type="button" class="btn btn-danger">默认</button>
+		</div>
+		
+		<div class="col-md-3">
+			  <h4>默认部门</h4>
+			  <div class="udivcss" id="departmentlist">
+				<ol>
+					<%
+						ArrayList<Department> deps=(ArrayList<Department>)request.getAttribute("departments");
+								for(Department dep : deps) {
+					%>
+						<li data-departmentid="<%=dep.getId()%>"<%=user.getDepid()==dep.getId()?" class=\"libgcl\"":"" %>><%=dep.getAlias()%></li>
+					<%
+						}
+					%>
+				</ol>
+			  </div>
+		</div>
+		
+		<div class="col-md-1">
+			<h4>&nbsp;</h4>
+			
+			<button id="defaultDep" type="button" class="btn btn-danger">默认</button>
 		</div>
 	</div>
 
@@ -146,7 +168,9 @@
 <script>
 	$("#createur").attr("disabled", "disabled");
 	$("#defaultr").attr("disabled", "disabled");
-
+	$("#defaultDep").attr("disabled", "disabled");
+	$("#rolelist li").d
+	
 	var roleid;
 	var userid = $("#userid").val();
 	var clickrole;
@@ -213,6 +237,28 @@
 			}
 		});
 	});
+	
+	var pid=0;
+	$("#departmentlist").on("click", "li", function() {
+		depid=$(this).data("departmentid");
+		$("#defaultDep").removeAttr("disabled");
+		$("#departmentlist li").removeClass("libgcl");
+		$(this).addClass("libgcl");
+	});
+	
+	$("#defaultDep").on("click", function() {
+		 $.post( "sdefaultdepartment", { depid : depid,
+			 							 userid : userid
+		 }, function( data ) {
+	            if(data=="ok") {
+	            	alert("部门修改成功");
+	            }else{
+	            	alert("修改失败 "+data);
+	            }
+	        });
+		
+	});
+	
 </script>
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->

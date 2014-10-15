@@ -31,7 +31,7 @@ public class PdepHierarchy extends HttpServlet {
 		}
 		String hierarchytree=sb.toString();
 		request.setAttribute("hierarchytree",hierarchytree);
-		String url = "/WEB-INF/rbac/pdephierarchy.jsp";
+		String url = "/WEB-INF/backend/pdephierarchy.jsp";
 		RequestDispatcher dispatcher = getServletContext()
 				.getRequestDispatcher(url);
 		dispatcher.forward(request, response);

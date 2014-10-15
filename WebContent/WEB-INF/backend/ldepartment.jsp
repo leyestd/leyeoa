@@ -17,6 +17,7 @@
 							<th>id</th>
 							<th>部门</th>
 							<th>别名</th>
+							<th>高层</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -27,7 +28,7 @@
 							if (rows == null) {
 						%>
 						<tr>
-							<td class="text-center" colspan="4">没有相关记录</td>
+							<td class="text-center" colspan="5">没有相关记录</td>
 						</tr>
 						<%
 							} else {
@@ -39,7 +40,7 @@
 								for (Object column : row) {
 							%>
 
-							<td><%=column.toString()%></td>
+							<td><%=(column==null)?"":column.toString()%></td>
 							<%
 								}
 							%>
@@ -149,7 +150,7 @@
 				if (data == "ok") {
 					department.remove();
 				} else {
-					alert("删除失败，您有部门关系存在");
+					alert("删除失败，您有数据关系存在");
 				}
 			});
 		}

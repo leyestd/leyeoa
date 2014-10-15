@@ -56,7 +56,7 @@ public class Udepartment extends HttpServlet {
 		request.setAttribute("departments", departments);
 		request.setAttribute("dep", dep);
 		request.setAttribute("checked", checked);
-		String url = "/WEB-INF/rbac/udepartment.jsp";
+		String url = "/WEB-INF/backend/udepartment.jsp";
 		RequestDispatcher dispatcher = getServletContext()
 				.getRequestDispatcher(url);
 		dispatcher.forward(request, response);
