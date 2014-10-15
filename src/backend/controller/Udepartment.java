@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import backend.dao.D_Department;
+import backend.javabean.Department;
 import rbac.inputcheck.CheckRole;
-import rbac.javabean.Department;
 /**
  * Servlet implementation class Udepartment
  */

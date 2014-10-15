@@ -7,20 +7,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import rbac.javabean.AccountPermissionRole;
+import rbac.javabean.Permission;
 import database.ConnectionPool;
 import database.DBUtil;
 
 public class D_Permission {
-	public static int doCreate(String name,String alias) {
+	public static int doCreate(String name,String alias,String pid) {
 	    ConnectionPool pool = ConnectionPool.getInstance();
 	    Connection connection = pool.getConnection();
 	    PreparedStatement ps=null;
 	    int count=0;
-	    String query = "INSERT INTO permission (name,alias) VALUES (?,?)";
+	    String query = "INSERT INTO permission (name,alias,pid) VALUES (?,?,?)";
 	    try {
 	    	ps = connection.prepareStatement(query);
 	    	ps.setString(1, name);
 	    	ps.setString(2, alias);
+	    	ps.setInt(3, Integer.valueOf(pid));
 	    	count=ps.executeUpdate();
 	    }
 	    catch(SQLException e)
@@ -35,6 +37,43 @@ public class D_Permission {
 	    }
 	    return count;
 	}	
+	
+	//查询所有控制器
+	public static ArrayList<Permission> doSelectAllController() {
+		ConnectionPool pool = ConnectionPool.getInstance();
+	    Connection connection = pool.getConnection();
+	    PreparedStatement ps=null;
+	    ResultSet rs=null;
+	    
+	    ArrayList<Permission> permissions=new ArrayList<Permission>();
+	    Permission p=null;
+	    String query = "SELECT id,name,alias,pid FROM permission WHERE pid=0";
+	    
+	    try {
+	    	ps = connection.prepareStatement(query);
+	 
+	    	rs=ps.executeQuery();
+	    	while(rs.next()) {
+	    		p=new Permission();
+	    		p.setId(rs.getInt("id"));
+	    		p.setName(rs.getString("name"));
+	    		p.setAlias(rs.getString("alias"));
+	    		p.setPid(rs.getInt("pid"));
+	    		permissions.add(p);
+	    	}
+	    	return permissions;
+	    }
+	    catch(SQLException e)
+	    {
+	        e.printStackTrace();
+	        return null;
+	    }
+	    finally
+	    {	DBUtil.closeResultSet(rs);
+	        DBUtil.closePreparedStatement(ps);
+	        pool.freeConnection(connection);
+	    }
+	}
 	
 	public static AccountPermissionRole doSelect(String name) {
 		ConnectionPool pool = ConnectionPool.getInstance();

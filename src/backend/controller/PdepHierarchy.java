@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import backend.dao.D_Department;
-import rbac.javabean.Department;
+import backend.javabean.Department;
 
 /**
  * Servlet implementation class PdepHierarchy

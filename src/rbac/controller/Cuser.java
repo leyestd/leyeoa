@@ -11,7 +11,6 @@ import rbac.dao.D_Role;
 import rbac.inputcheck.CheckAccount;
 import rbac.javabean.Account;
 import rbac.javabean.AccountPermissionRole;
-import rbac.javabean.Department;
 import rbac.javabean.RbacAccount;
 import rbac.javabean.RbacRole;
 import security.BCrypt;
@@ -23,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import backend.dao.D_Department;
+import backend.javabean.Department;
 
 /**
  * Servlet implementation class cuser

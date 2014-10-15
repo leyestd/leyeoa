@@ -27,14 +27,15 @@ public class Upermission extends HttpServlet {
 		String newName = request.getParameter("newName");
 		String permissionName = request.getParameter("permissionName");
 		String alias = request.getParameter("alias");
+		String pid=request.getParameter("pid");
 
-		String checked=CheckPermission.doCheckNull(newName, alias);
+		String checked=CheckPermission.doCheckNull(newName, alias,pid);
 		
 		if(checked.equals("ok")) {
 			newName=newName.trim();
 			alias=alias.trim();
 			
-			checked=CheckPermission.doMatch(newName, alias);
+			checked=CheckPermission.doMatch(newName, alias,pid);
 		}
 		
 		AccountPermissionRole permission=D_Permission.doSelect(permissionName);

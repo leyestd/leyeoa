@@ -26,10 +26,10 @@ public class Lpermission extends HttpServlet {
 			pageNumber = Integer.valueOf(request.getParameter("pageNumber"));
 		}
 
-		Pagination page = new Pagination(pageNumber, 8, "permission","");
+		Pagination page = new Pagination(pageNumber, 8, "permission LEFT JOIN permission AS p ON permission.pid = p.id","");
 
 		if (page.getTotal() != 0) {
-			String[] columns = { "id", "name", "alias" };
+			String[] columns = { "permission.id", "permission.name", "permission.alias" , "p.alias"};
 			List<ArrayList<Object>> rows = page.getRows(columns);
 			request.setAttribute("rows", rows);
 			request.setAttribute("pageNumber", pageNumber);

@@ -17,6 +17,7 @@
 							<th>id</th>
 							<th>操作</th>
 							<th>别名</th>
+							<th>上层</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -39,7 +40,7 @@
 								for (Object column : row) {
 							%>
 
-							<td><%=column.toString()%></td>
+							<td><%=(column==null)?"控制器":column.toString()%></td>
 							<%
 								}
 							%>

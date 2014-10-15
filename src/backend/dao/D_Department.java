@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import rbac.javabean.Department;
+import backend.javabean.Department;
 import database.ConnectionPool;
 import database.DBUtil;
 

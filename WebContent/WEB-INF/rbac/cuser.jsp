@@ -1,6 +1,6 @@
 <%@ include file="/WEB-INF/jspf/backend/head.jsp" %>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="rbac.javabean.AccountPermissionRole,java.util.ArrayList,rbac.javabean.Department" %>   
+<%@ page import="rbac.javabean.AccountPermissionRole,java.util.ArrayList,backend.javabean.Department" %>   
 
 <div class="container">
 	<!-- Example row of columns -->

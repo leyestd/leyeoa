@@ -3,7 +3,7 @@ package rbac.inputcheck;
 import security.RegexUtil;
 
 public class CheckPermission {
-	public static String doMatch(String name,String alias) {
+	public static String doMatch(String name,String alias,String pid) {
 		String value="ok";
 		
 		if(!RegexUtil.isName(name)) {
@@ -14,13 +14,16 @@ public class CheckPermission {
 			return "别名格式有误";
 		}
 		
+		if(!RegexUtil.isDigital(pid)) {
+			return "上层操作格式有误";
+		}
 	    return value;
 	    
 	}
 	
-	public static String doCheckNull(String name,String alias) {
+	public static String doCheckNull(String name,String alias,String pid) {
 		String value="ok";
-		if(name== null || alias == null) {
+		if(pid==null || name== null || alias == null) {
 			return "";
 		}else if(name.trim().length()<2 || name.trim().length()>25 ) {
 			return "操作名长度不符";
