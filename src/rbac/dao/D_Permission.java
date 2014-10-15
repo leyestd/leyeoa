@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import rbac.javabean.AccountPermissionRole;
@@ -16,14 +17,19 @@ public class D_Permission {
 	    ConnectionPool pool = ConnectionPool.getInstance();
 	    Connection connection = pool.getConnection();
 	    PreparedStatement ps=null;
-	    int count=0;
+	    ResultSet rs=null;
+	    int GeneratedId=0;
 	    String query = "INSERT INTO permission (name,alias,pid) VALUES (?,?,?)";
 	    try {
-	    	ps = connection.prepareStatement(query);
+	    	ps = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
 	    	ps.setString(1, name);
 	    	ps.setString(2, alias);
 	    	ps.setInt(3, Integer.valueOf(pid));
-	    	count=ps.executeUpdate();
+	    	ps.executeUpdate();
+	    	rs=ps.getGeneratedKeys();
+	    	if(rs.next()){
+	    		GeneratedId=rs.getInt(1);
+	    	}
 	    }
 	    catch(SQLException e)
 	    {
@@ -32,10 +38,11 @@ public class D_Permission {
 	    }
 	    finally
 	    {
+	    	DBUtil.closeResultSet(rs);
 	        DBUtil.closePreparedStatement(ps);
 	        pool.freeConnection(connection);
 	    }
-	    return count;
+	    return GeneratedId;
 	}	
 	
 	//查询所有控制器
@@ -75,6 +82,61 @@ public class D_Permission {
 	    }
 	}
 	
+	//查询此操作有没了下层
+		public static int doSelectChild(int pid) {
+			ConnectionPool pool = ConnectionPool.getInstance();
+		    Connection connection = pool.getConnection();
+		    PreparedStatement ps=null;
+		    ResultSet rs=null;
+		    
+		    String query = "SELECT id FROM permission WHERE pid=?";
+		    int id=0;
+		    try {
+		    	ps = connection.prepareStatement(query);
+		    	ps.setInt(1, pid);
+		    	rs=ps.executeQuery();
+		    	if(rs.next()) {
+		    		id=rs.getInt("id");
+		    	}
+		    	return id;
+		    }
+		    catch(SQLException e)
+		    {
+		        e.printStackTrace();
+		        return 0;
+		    }
+		    finally
+		    {	DBUtil.closeResultSet(rs);
+		        DBUtil.closePreparedStatement(ps);
+		        pool.freeConnection(connection);
+		    }
+		}
+	
+		//删除部门
+		public static int doDelete(int id) {
+		    ConnectionPool pool = ConnectionPool.getInstance();
+		    Connection connection = pool.getConnection();
+		    PreparedStatement ps=null;
+		    int count=0;
+		    String query = "DELETE FROM permission WHERE id=?";
+		    try {
+		    	ps = connection.prepareStatement(query);
+		    	ps.setInt(1, id);  	
+		    	count=ps.executeUpdate();
+		    }
+		    catch(SQLException e)
+		    {
+		        e.printStackTrace();
+		        return 0;
+		    }
+		    finally
+		    {
+		        DBUtil.closePreparedStatement(ps);
+		        pool.freeConnection(connection);
+		    }
+		    return count;
+		}
+		
 	public static AccountPermissionRole doSelect(String name) {
 		ConnectionPool pool = ConnectionPool.getInstance();
 	    Connection connection = pool.getConnection();

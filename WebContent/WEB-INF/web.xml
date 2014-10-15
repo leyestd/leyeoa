@@ -638,4 +638,14 @@
     <servlet-name>SdefaultDepartment</servlet-name>
     <url-pattern>/rbac/sdefaultdepartment</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Dpermission</display-name>
+    <servlet-name>Dpermission</servlet-name>
+    <servlet-class>rbac.controller.Dpermission</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Dpermission</servlet-name>
+    <url-pattern>/rbac/dpermission</url-pattern>
+  </servlet-mapping>
 </web-app>

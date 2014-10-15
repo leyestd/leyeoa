@@ -46,7 +46,7 @@
 							%>
 							<td><a href="upermission?permissionName=<%=row.get(1)%>"><span
 									class="glyphicon glyphicon-pencil"></span></a> &nbsp; <a
-								data-uname="<%=row.get(0)%>" href="#"><span
+								data-permissionid="<%=row.get(0)%>" href="#"><span
 									class="glyphicon glyphicon-remove"></span></a></td>
 						</tr>
 
@@ -142,16 +142,16 @@
 	$(".glyphicon-remove").parent().on("click", function() {
 		var confirm_ = confirm("您确认要删除?");
 		if (confirm_) {
-			var uname = $(this).data("uname");
-			var role = $(this).parent().parent();
-			$.post("drolePermission", {
-				tableName : "permission",
-				uname : uname
+			var permissionid = $(this).data("permissionid");
+			var pparent = $(this).parent().parent();
+
+			$.post("dpermission", {
+				permissionId : permissionid
 			}, function(data) {
 				if (data == "ok") {
-					role.remove();
+					pparent.remove();
 				} else {
-					alert("删除失败，您有角色关系存在");
+					alert("删除失败，您有关系存在");
 				}
 			});
 		}

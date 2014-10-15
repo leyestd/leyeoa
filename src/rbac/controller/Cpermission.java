@@ -47,10 +47,10 @@ public class Cpermission extends HttpServlet {
 			PrintWriter out = response.getWriter();
 			
 			if (checked.equals("ok")) {
-
-				int count = D_Permission.doCreate(name, alias, pid);
-				if (count != 0) {
-					checked = "ok";
+				int GeneratedId = D_Permission.doCreate(name, alias, pid);
+				if (GeneratedId != 0) {
+					out.print("ok"+GeneratedId);
+					return;
 				} else {
 					checked = "数据库操作失败";
 				}

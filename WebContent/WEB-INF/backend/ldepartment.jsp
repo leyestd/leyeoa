@@ -40,7 +40,7 @@
 								for (Object column : row) {
 							%>
 
-							<td><%=(column==null)?"":column.toString()%></td>
+							<td><%=(column==null)?"顶层":column.toString()%></td>
 							<%
 								}
 							%>

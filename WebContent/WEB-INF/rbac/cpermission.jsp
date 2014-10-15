@@ -84,10 +84,16 @@
 			 				name : permissionName ,
 			 				alias : permissionAlias ,
 		 }, function( data ) {
-	            if(data=="ok") {
+	            if(data.substr(0, 2)=="ok") {
 	            	alert("添加操作成功");
+	            	if(pid==0) {
+	            		$("#permissionlist ol").append('<li data-permissionid="'+data.substr(2)+'">'+permissionAlias+'</li>');
+	            	}
 	            	$("#inputName").val("");
 	            	$("#inputAlias").val("");
+	            	pid=0;
+	            	$("#permissionlist li").removeClass("libgcl");
+	   
 	            }else{
 	            	alert("添加失败 "+data);
 	            }

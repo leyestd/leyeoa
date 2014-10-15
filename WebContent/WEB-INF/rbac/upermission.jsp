@@ -40,7 +40,7 @@ AccountPermissionRole permission=(AccountPermissionRole)request.getAttribute("pe
 		<div class="form-group">
 			<label for="alias" class="col-md-2 control-label">别名</label>
 			<div class="col-md-4">
-				<input  name="alias" value="<%=permission.getAlias() %>"type="text" class="form-control" id="alias"
+				<input  name="alias" value="<%=permission.getAlias() %>" type="text" class="form-control" id="alias"
 					placeholder="别名">
 			</div>
 			<div class="col-md-6"></div>
