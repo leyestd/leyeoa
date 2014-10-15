@@ -20,7 +20,7 @@ import rbac.javabean.RbacRole;
 import security.BCrypt;
 
 public class Test {
-
+ 
 	public static void main(String[] args) {
 //		String mflow[]="e,4".split(",");
 //	System.out.println(mflow[1]);
