@@ -77,6 +77,14 @@
                             </ul>
                         </li>
                         <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">部门管理 <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="<%=basePath+"backend/cdepartment" %>">添加部门</a></li>
+                                <li><a href="<%=basePath+"backend/ldepartment" %>">列出部门</a></li>
+                                <li><a href="<%=basePath+"backend/pdephierarchy" %>">部门层次</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">权限管理 <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li><a href="<%=basePath+"rbac/cuser" %>">添加用户</a></li>
@@ -87,10 +95,6 @@
                                 <li class="divider"></li>
                                 <li><a href="<%=basePath+"rbac/cpermission" %>">添加操作</a></li>
                                 <li><a href="<%=basePath+"rbac/lpermission" %>">列出操作</a></li>
-                                <li class="divider"></li>
-                                <li><a href="<%=basePath+"rbac/cdepartment" %>">添加部门</a></li>
-                                <li><a href="<%=basePath+"rbac/ldepartment" %>">列出部门</a></li>
-                                <li><a href="<%=basePath+"rbac/pdephierarchy" %>">部门层次</a></li>
                                 <li><a href="<%=basePath+"rbac/prolehierarchytree" %>">列出层次</a></li>
                                 <li class="divider"></li>
                                 <li><a href="<%=basePath+"rbac/crelationship" %>">添加关系</a></li>

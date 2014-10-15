@@ -1,4 +1,4 @@
-package rbac.controller;
+package backend.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import backend.dao.D_Department;
 import rbac.inputcheck.CheckDepartment;
 import rbac.javabean.Department;
-import rbac.dao.D_Department;
 
 public class Cdepartment extends HttpServlet {
 	private static final long serialVersionUID = 1L;

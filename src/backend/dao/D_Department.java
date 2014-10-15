@@ -1,4 +1,4 @@
-package rbac.dao;
+package backend.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

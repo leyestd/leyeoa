@@ -572,60 +572,60 @@
     <description></description>
     <display-name>Cdepartment</display-name>
     <servlet-name>Cdepartment</servlet-name>
-    <servlet-class>rbac.controller.Cdepartment</servlet-class>
+    <servlet-class>backend.controller.Cdepartment</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Cdepartment</servlet-name>
-    <url-pattern>/rbac/cdepartment</url-pattern>
+    <url-pattern>/backend/cdepartment</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
     <display-name>Ldepartment</display-name>
     <servlet-name>Ldepartment</servlet-name>
-    <servlet-class>rbac.controller.Ldepartment</servlet-class>
+    <servlet-class>backend.controller.Ldepartment</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Ldepartment</servlet-name>
-    <url-pattern>/rbac/ldepartment</url-pattern>
+    <url-pattern>/backend/ldepartment</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
     <display-name>Ddepartment</display-name>
     <servlet-name>Ddepartment</servlet-name>
-    <servlet-class>rbac.controller.Ddepartment</servlet-class>
+    <servlet-class>backend.controller.Ddepartment</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Ddepartment</servlet-name>
-    <url-pattern>/rbac/ddepartment</url-pattern>
+    <url-pattern>/backend/ddepartment</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
     <display-name>Udepartment</display-name>
     <servlet-name>Udepartment</servlet-name>
-    <servlet-class>rbac.controller.Udepartment</servlet-class>
+    <servlet-class>backend.controller.Udepartment</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Udepartment</servlet-name>
-    <url-pattern>/rbac/udepartment</url-pattern>
+    <url-pattern>/backend/udepartment</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
     <display-name>UdepHierarchy</display-name>
     <servlet-name>UdepHierarchy</servlet-name>
-    <servlet-class>rbac.controller.UdepHierarchy</servlet-class>
+    <servlet-class>backend.controller.UdepHierarchy</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>UdepHierarchy</servlet-name>
-    <url-pattern>/rbac/udephierarchy</url-pattern>
+    <url-pattern>/backend/udephierarchy</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>
     <display-name>PdepHierarchy</display-name>
     <servlet-name>PdepHierarchy</servlet-name>
-    <servlet-class>rbac.controller.PdepHierarchy</servlet-class>
+    <servlet-class>backend.controller.PdepHierarchy</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>PdepHierarchy</servlet-name>
-    <url-pattern>/rbac/pdephierarchy</url-pattern>
+    <url-pattern>/backend/pdephierarchy</url-pattern>
   </servlet-mapping>
 </web-app>
