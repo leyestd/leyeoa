@@ -23,6 +23,14 @@ import rbac.javabean.RbacAccount;
  *
  * @author Administrator
  */
+
+/*
+  SELECT role.id ,concat(controller.name,'/',action.name) FROM role INNER JOIN role_permission on role.id = role_permission.role_id 
+					   INNER JOIN permission AS action ON role_permission.permission_id = action.id
+					   INNER JOIN permission AS controller ON action.pid = controller.id ORDER BY role.id
+ */
+
+
 public class RbacInitialize {
     public static HashMap<Integer,RbacAccount> doRbacUserInit() {
         ConnectionPool pool = ConnectionPool.getInstance();
@@ -98,9 +106,7 @@ public class RbacInitialize {
                         "inner join account on account_role.account_id=account.id " +
                         "order by role.id";
         try
-        {   
-
-            
+        {       
             HashMap<Integer,String> user=new HashMap<Integer,String>();        
             ps = connection.prepareStatement(query);
             rs = ps.executeQuery();
@@ -124,8 +130,7 @@ public class RbacInitialize {
             if(temp!=0) {
                     role.setUser(user);
                     roles.put(temp, role);
-            }
-            
+            } 
         }
         catch(SQLException e)
         {

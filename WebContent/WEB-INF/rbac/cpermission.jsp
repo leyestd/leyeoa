@@ -89,7 +89,7 @@
 	            if(data.substr(0, 2)=="ok") {
 	            	alert("添加操作成功");
 	            	if(pid==0) {
-	            		$("#permissionlist ol").append('<li data-permissionid="'+data.substr(2)+'">'+permissionAlias+'</li>');
+	            		$("#permissionlist ul").append('<li class="list-group-item list-group-item-warning" data-permissionid="'+data.substr(2)+'">'+permissionAlias+'</li>');
 	            	}
 	            	$("#inputName").val("");
 	            	$("#inputAlias").val("");
