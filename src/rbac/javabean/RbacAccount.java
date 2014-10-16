@@ -14,16 +14,16 @@ public class RbacAccount {
 	}
 
 	private String fullname;
-	private ArrayList<String> role;
+	private ArrayList<Integer> role;
 
 	public RbacAccount() {
 	}
 
-	public ArrayList<String> getRole() {
+	public ArrayList<Integer> getRole() {
 		return role;
 	}
 
-	public void setRole(ArrayList<String> role) {
+	public void setRole(ArrayList<Integer> role) {
 		this.role = role;
 	}
 

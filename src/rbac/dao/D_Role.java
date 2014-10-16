@@ -117,6 +117,39 @@ public class D_Role {
 	    }
 	}
 	
+	public static AccountPermissionRole doSelect(int id) {
+		ConnectionPool pool = ConnectionPool.getInstance();
+	    Connection connection = pool.getConnection();
+	    PreparedStatement ps=null;
+	    ResultSet rs=null;
+	    
+	    AccountPermissionRole role=null;
+	    String query = "SELECT id,name,alias FROM role WHERE id=?";
+	    
+	    try {
+	    	ps = connection.prepareStatement(query);
+	    	ps.setInt(1, id);
+	    	rs=ps.executeQuery();
+	    	if(rs.next()) {
+	    		role=new AccountPermissionRole();
+	    		role.setId(rs.getInt("id"));
+	    		role.setName(rs.getString("name"));
+	    		role.setAlias(rs.getString("alias"));
+	    	}
+	    	return role;
+	    }
+	    catch(SQLException e)
+	    {
+	        e.printStackTrace();
+	        return null;
+	    }
+	    finally
+	    {	DBUtil.closeResultSet(rs);
+	        DBUtil.closePreparedStatement(ps);
+	        pool.freeConnection(connection);
+	    }
+	}
+	
 	public static int doUpdate(String name,String alias,String oldName) {
 	    ConnectionPool pool = ConnectionPool.getInstance();
 	    Connection connection = pool.getConnection();

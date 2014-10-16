@@ -7,6 +7,7 @@
 package mylistener;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.ServletContextEvent;
@@ -26,14 +27,16 @@ public class RbacServletListener implements ServletContextListener {
         
         HashMap<Integer,RbacAccount> rbac=RbacInitialize.doRbacUserInit();
         HashMap<Integer,RbacRole> roles=RbacInitialize.doRbacRoleInit();
+        HashMap<Integer,ArrayList<String>> actions=RbacInitialize.doRbacActionInit();
         
         sce.getServletContext().setAttribute("rbac", rbac);
         sce.getServletContext().setAttribute("roles", roles);
+        sce.getServletContext().setAttribute("actions", actions);
         
     }
 
     public void contextDestroyed(ServletContextEvent sce) {
-        System.out.println("系统已关闭"); 
+        System.out.println("SHUTDOWN"); 
     }
 
 }

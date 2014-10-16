@@ -76,12 +76,11 @@ public class Uuser extends HttpServlet {
 			if (count == 0) {
 				checked = "数据库操作失败";
 			} else {
-				synchronized (getServletContext().getAttribute("rbac")) {
-					HashMap<Integer, RbacAccount> rbac = RbacInitialize
-							.doRbacUserInit();
-					HashMap<Integer, RbacRole> roles = RbacInitialize
-							.doRbacRoleInit();
-
+				synchronized (getServletContext()) {
+					HashMap<Integer, RbacAccount> rbac = RbacInitialize.doRbacUserInit();
+					HashMap<Integer, RbacRole> roles = RbacInitialize.doRbacRoleInit();
+					HashMap<Integer,ArrayList<String>> actions=RbacInitialize.doRbacActionInit();
+					getServletContext().setAttribute("actions", actions);	
 					getServletContext().setAttribute("rbac", rbac);
 					getServletContext().setAttribute("roles", roles);
 				}
@@ -93,12 +92,12 @@ public class Uuser extends HttpServlet {
 		}
 		
 		HashMap<Integer,RbacAccount> rbac=(HashMap<Integer,RbacAccount>)getServletContext().getAttribute("rbac");
-		ArrayList<String> accountRoles=rbac.get(oldUser.getId()).getRole();
+		ArrayList<Integer> accountRoles=rbac.get(oldUser.getId()).getRole();
 		ArrayList<AccountPermissionRole> ownedRole=new ArrayList<AccountPermissionRole>();
 		AccountPermissionRole role=null;
 		
-		for(String roleName : accountRoles) {
-			role=D_Role.doSelect(roleName);
+		for(int roleId : accountRoles) {
+			role=D_Role.doSelect(roleId);
 			ownedRole.add( role);
 		}
 			

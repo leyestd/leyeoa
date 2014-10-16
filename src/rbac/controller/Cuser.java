@@ -79,15 +79,15 @@ public class Cuser extends HttpServlet {
 						Integer.valueOf(default_roleid),Integer.valueOf(default_depid));
 				
 				if (count != 0) {
-					synchronized (getServletContext().getAttribute("rbac")) {
-						HashMap<Integer, RbacAccount> rbac = RbacInitialize
-								.doRbacUserInit();
-						HashMap<Integer, RbacRole> roles = RbacInitialize
-								.doRbacRoleInit();
-
+					synchronized (getServletContext()) {
+						HashMap<Integer, RbacAccount> rbac = RbacInitialize.doRbacUserInit();
+						HashMap<Integer, RbacRole> roles = RbacInitialize.doRbacRoleInit();
+						HashMap<Integer,ArrayList<String>> actions=RbacInitialize.doRbacActionInit();
+						getServletContext().setAttribute("actions", actions);	
 						getServletContext().setAttribute("rbac", rbac);
 						getServletContext().setAttribute("roles", roles);
 					}
+
 					out.print("ok");
 					return;
 				} else {

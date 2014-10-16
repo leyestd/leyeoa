@@ -45,7 +45,8 @@ public class BackendCheckFilter implements Filter {
 			httpResponse.sendRedirect(basePath+"index.jsp");
 		}else {
 			int accountid=(Integer)httpRequest.getSession().getAttribute("id");
-			if(rbac.get(accountid).getRole().contains("administrator")) {
+			System.out.println(rbac.size());
+			if(rbac.get(accountid).getRole().contains(1000)) {
 				chain.doFilter(request, response);
 			}else {
 				httpResponse.sendRedirect(basePath+"index.jsp");

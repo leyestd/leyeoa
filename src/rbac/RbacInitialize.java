@@ -30,7 +30,7 @@ import rbac.javabean.RbacAccount;
 					   INNER JOIN permission AS controller ON action.pid = controller.id ORDER BY role.id
  */
 
-
+//取得用户对应信息
 public class RbacInitialize {
     public static HashMap<Integer,RbacAccount> doRbacUserInit() {
         ConnectionPool pool = ConnectionPool.getInstance();
@@ -40,12 +40,12 @@ public class RbacInitialize {
         HashMap<Integer , RbacAccount> rbac = new HashMap<Integer , RbacAccount>(); 
         
         String query = 
-                "SELECT account.id,account.fullname,account.default_roleid,role.name FROM account " +
-                        "inner join account_role on account.id= account_role.account_id " +
-                        "inner join role on account_role.role_id=role.id order by account.id";
+                "SELECT account.id,account.fullname,account.default_roleid,role.id FROM account " +
+                        "INNER JOIN account_role ON account.id= account_role.account_id " +
+                        "INNER JOIN role ON account_role.role_id=role.id ORDER BY account.id";
         try
         {   
-            ArrayList<String> role=new ArrayList<String>();
+            ArrayList<Integer> role=new ArrayList<Integer>();
             int temp=0;
             RbacAccount u=new RbacAccount();
             
@@ -61,12 +61,12 @@ public class RbacInitialize {
                         u.setRole(role);
                         rbac.put(temp, u);
                         temp=rs.getInt("account.id");
-                        role=new ArrayList<String>();
+                        role=new ArrayList<Integer>();
                         u=new RbacAccount();
                 }
                //System.out.println(rs.getInt("account.id")+"    "+ rs.getString("role.name")+ "  "+rs.getString("permission.name"));
-                if(role.indexOf(rs.getString("role.name"))==-1){
-                     role.add(rs.getString("role.name"));   
+                if(role.indexOf(rs.getInt("role.id"))==-1){
+                     role.add(rs.getInt("role.id"));   
                 }
                 
                 u.setFullname(rs.getString("account.fullname"));
@@ -92,7 +92,8 @@ public class RbacInitialize {
         }
         return rbac;
     }
-    
+   
+//取得角色下所有用户    
     public static HashMap<Integer,RbacRole> doRbacRoleInit() {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -102,9 +103,9 @@ public class RbacInitialize {
         
         String query = 
                 "SELECT role.id,role.name,role.alias,account.id,account.fullname FROM role " +
-                        "inner join account_role on role.id= account_role.role_id " +
-                        "inner join account on account_role.account_id=account.id " +
-                        "order by role.id";
+                        "INNER JOIN account_role ON role.id= account_role.role_id " +
+                        "INNER JOIN account ON account_role.account_id=account.id " +
+                        "ORDER BY role.id";
         try
         {       
             HashMap<Integer,String> user=new HashMap<Integer,String>();        
@@ -146,5 +147,53 @@ public class RbacInitialize {
  
         return roles;
     }
-    
+
+//取得角色所有可执行的动作
+    public static HashMap<Integer,ArrayList<String>> doRbacActionInit() {
+    	ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        HashMap<Integer,ArrayList<String>> actions = new  HashMap<Integer,ArrayList<String>>(); 
+        
+        String query = 
+                "SELECT role.id ,concat(controller.name,'/',action.name) as action FROM role" +
+                     " INNER JOIN role_permission on role.id = role_permission.role_id"+ 
+					 " INNER JOIN permission AS action ON role_permission.permission_id = action.id" +
+					 " INNER JOIN permission AS controller ON action.pid = controller.id ORDER BY role.id";
+        try
+        {       
+        	ArrayList<String> action = new ArrayList<String>();        
+            ps = connection.prepareStatement(query);
+            rs = ps.executeQuery();
+            int temp=0;
+            
+            while(rs.next()){
+                if(temp==0) { 
+                    temp=rs.getInt("role.id");
+                }else if(temp!=rs.getInt("role.id")) {
+                    actions.put(temp, action);
+                    temp=rs.getInt("role.id");
+                    action = new ArrayList<String>();
+                }
+                action.add(rs.getString("action"));
+            }
+            if(temp!=0) {
+            	actions.put(temp, action);
+            } 
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        finally
+        {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+        }
+ 
+        return actions;
+    }
 }

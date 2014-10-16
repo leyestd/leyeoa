@@ -1,6 +1,7 @@
 package rbac.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
@@ -46,15 +47,15 @@ public class Upermission extends HttpServlet {
 			if(count==0) {
 				checked="数据库操作失败";
 			}else {
-				synchronized (getServletContext().getAttribute("rbac")) {
-					HashMap<Integer, RbacAccount> rbac = RbacInitialize
-							.doRbacUserInit();
-					HashMap<Integer, RbacRole> roles = RbacInitialize
-							.doRbacRoleInit();
-
+				synchronized (getServletContext()) {
+					HashMap<Integer, RbacAccount> rbac = RbacInitialize.doRbacUserInit();
+					HashMap<Integer, RbacRole> roles = RbacInitialize.doRbacRoleInit();
+					HashMap<Integer,ArrayList<String>> actions=RbacInitialize.doRbacActionInit();
+					getServletContext().setAttribute("actions", actions);	
 					getServletContext().setAttribute("rbac", rbac);
 					getServletContext().setAttribute("roles", roles);
 				}
+
 				response.sendRedirect("upermission?permissionName="+newName+"&checked=success");
 				return;
 			}

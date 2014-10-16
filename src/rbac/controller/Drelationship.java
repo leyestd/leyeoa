@@ -2,6 +2,7 @@ package rbac.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
@@ -45,7 +46,7 @@ public class Drelationship extends HttpServlet {
 			
 			if (roleid != null) {
 				//默认相关不能删除,删除用户把些用户默认角色改为其它
-				synchronized (roles) {
+				synchronized (getServletContext()) {
 					int default_roleid = rbac.get(Integer.valueOf(userid)).getDefault_roleid();
 					if(default_roleid != Integer.valueOf(roleid)) {
 						count = D_Role_Account.doDelete(roleid,userid);
@@ -56,10 +57,11 @@ public class Drelationship extends HttpServlet {
 			}
 			
 			if (count != 0) {
-				synchronized (getServletContext().getAttribute("rbac")) {
+				synchronized (getServletContext()) {
 					rbac = RbacInitialize.doRbacUserInit();
 					roles = RbacInitialize.doRbacRoleInit();
-
+					HashMap<Integer,ArrayList<String>> actions=RbacInitialize.doRbacActionInit();
+					getServletContext().setAttribute("actions", actions);	
 					getServletContext().setAttribute("rbac", rbac);
 					getServletContext().setAttribute("roles", roles);
 				}

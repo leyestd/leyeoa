@@ -2,6 +2,7 @@ package rbac.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.ServletException;
@@ -51,10 +52,11 @@ public class SdefaultRole extends HttpServlet {
 			}
 			
 			if(count1 != 0 || count2!=0) {
-				synchronized (getServletContext().getAttribute("rbac")) {
+				synchronized (getServletContext()) {
 					HashMap<Integer, RbacAccount> rbac = RbacInitialize.doRbacUserInit();
 					roles = RbacInitialize.doRbacRoleInit();
-
+					HashMap<Integer,ArrayList<String>> actions=RbacInitialize.doRbacActionInit();
+					getServletContext().setAttribute("actions", actions);	
 					getServletContext().setAttribute("rbac", rbac);
 					getServletContext().setAttribute("roles", roles);
 				}
