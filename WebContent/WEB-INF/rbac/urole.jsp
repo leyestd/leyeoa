@@ -22,7 +22,7 @@ AccountPermissionRole role=(AccountPermissionRole)request.getAttribute("role");
 				<input type="hidden" name="roleName" value="<%=role.getName() %>">
 			</div>
 			<div class="col-md-1">
-				<button type="submit" class="btn btn-warning">提交</button>
+				<button type="submit" class="btn btn-danger">提交</button>
 			</div>
 			<div class="col-md-6">
 			<h5>

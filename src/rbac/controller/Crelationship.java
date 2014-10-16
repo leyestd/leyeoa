@@ -18,6 +18,7 @@ import rbac.dao.D_Role;
 import rbac.dao.D_Role_Account;
 import rbac.dao.D_Role_Permission;
 import rbac.javabean.AccountPermissionRole;
+import rbac.javabean.Permission;
 import rbac.javabean.RbacRole;
 import rbac.javabean.RbacAccount;
 
@@ -41,11 +42,25 @@ public class Crelationship extends HttpServlet {
 		if (roleid == null) {
 
 			ArrayList<AccountPermissionRole> users = D_Account.doSelectAll();
-			ArrayList<AccountPermissionRole> permissions = D_Permission
-					.doSelectAll();
+
+			ArrayList<Permission> DBpermissions=D_Permission.doSelectAllControllerActions();
+			HashMap<Permission,ArrayList<Permission>> ControllerActions=new HashMap<Permission,ArrayList<Permission>>();
+			ArrayList<Permission> pers=null;
+			
+			for(Permission per : DBpermissions) {
+				
+				if(per.getPid()==0) {
+					//System.out.println(per.getAlias());
+					pers=doSelectActions(DBpermissions,per.getId());
+					if(pers.size()>0) {
+						ControllerActions.put(per,pers);
+					}
+				}
+			}
+				System.out.println(DBpermissions.size());
 			ArrayList<AccountPermissionRole> roles = D_Role.doSelectAll();
 			request.setAttribute("users", users);
-			request.setAttribute("permissions", permissions);
+			request.setAttribute("ControllerActions", ControllerActions);
 			request.setAttribute("roles", roles);
 
 			String url = "/WEB-INF/rbac/crelationship.jsp";
@@ -54,6 +69,7 @@ public class Crelationship extends HttpServlet {
 			dispatcher.forward(request, response);
 
 		} else {
+			
 			int count = 0;
 		    response.setCharacterEncoding("UTF-8");  
 		    response.setContentType("text/plain; charset=utf-8"); 
@@ -90,6 +106,18 @@ public class Crelationship extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		this.doGet(request, response);
+	}
+	
+	
+	protected ArrayList<Permission> doSelectActions(ArrayList<Permission> DBpermissions,int id) {
+		ArrayList<Permission> pers=new ArrayList<Permission>();
+		for(Permission per : DBpermissions) {
+			
+			if(per.getPid() == id) {
+				pers.add(per);	
+			}  
+		}
+		return pers;	
 	}
 
 }

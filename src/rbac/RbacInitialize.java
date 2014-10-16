@@ -32,17 +32,12 @@ public class RbacInitialize {
         HashMap<Integer , RbacAccount> rbac = new HashMap<Integer , RbacAccount>(); 
         
         String query = 
-                "SELECT account.id,account.fullname,account.default_roleid,role.name,permission.name FROM account " +
+                "SELECT account.id,account.fullname,account.default_roleid,role.name FROM account " +
                         "inner join account_role on account.id= account_role.account_id " +
-                        "inner join role on account_role.role_id=role.id " +
-                        "inner join role_permission on role.id=role_permission.role_id " +
-                        "inner join permission on role_permission.permission_id=permission.id order by account.id";
+                        "inner join role on account_role.role_id=role.id order by account.id";
         try
         {   
-
-            
             ArrayList<String> role=new ArrayList<String>();
-            ArrayList<String> permission=new ArrayList<String>(); 
             int temp=0;
             RbacAccount u=new RbacAccount();
             
@@ -55,12 +50,10 @@ public class RbacInitialize {
                 }
                 else if(temp != rs.getInt("account.id")) 
                 {       
-                        u.setPermission(permission);
                         u.setRole(role);
                         rbac.put(temp, u);
                         temp=rs.getInt("account.id");
                         role=new ArrayList<String>();
-                        permission=new ArrayList<String>();
                         u=new RbacAccount();
                 }
                //System.out.println(rs.getInt("account.id")+"    "+ rs.getString("role.name")+ "  "+rs.getString("permission.name"));
@@ -68,15 +61,11 @@ public class RbacInitialize {
                      role.add(rs.getString("role.name"));   
                 }
                 
-                if(permission.indexOf(rs.getString("permission.name"))==-1){
-                     permission.add(rs.getString("permission.name")); 
-                }
                 u.setFullname(rs.getString("account.fullname"));
                 u.setDefault_roleid(rs.getInt("default_roleid"));
                // System.out.println(rs.getInt("account.id")+ "  | "+rs.getString("role.name")+" | "+rs.getString("permission.name"));
             }
             if(temp!=0) {                  
-                   u.setPermission(permission);
                    u.setRole(role);
                    rbac.put(temp, u);
             }
@@ -93,7 +82,6 @@ public class RbacInitialize {
             DBUtil.closePreparedStatement(ps);
             pool.freeConnection(connection);
         }
- 
         return rbac;
     }
     

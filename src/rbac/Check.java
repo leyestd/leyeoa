@@ -18,7 +18,7 @@ public class Check {
         return (user.getRole().indexOf(role)!=-1);
     }
     
-    public static boolean isPermitted(String permission,RbacAccount user) {
-        return (user.getPermission().indexOf(permission)!=-1);
-    }
+//    public static boolean isPermitted(String permission,RbacAccount user) {
+//        return (user.getPermission().indexOf(permission)!=-1);
+//    }
 }

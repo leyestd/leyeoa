@@ -15,7 +15,6 @@ public class RbacAccount {
 
 	private String fullname;
 	private ArrayList<String> role;
-	private ArrayList<String> permission;
 
 	public RbacAccount() {
 	}
@@ -26,14 +25,6 @@ public class RbacAccount {
 
 	public void setRole(ArrayList<String> role) {
 		this.role = role;
-	}
-
-	public ArrayList<String> getPermission() {
-		return permission;
-	}
-
-	public void setPermission(ArrayList<String> permission) {
-		this.permission = permission;
 	}
 
 	public String getFullname() {

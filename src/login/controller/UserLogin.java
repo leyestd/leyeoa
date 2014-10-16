@@ -23,13 +23,13 @@ public class UserLogin extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		HashMap<Integer, RbacAccount> rbac = (HashMap<Integer, RbacAccount>) getServletContext()
-				.getAttribute("rbac");
+		HashMap<Integer, RbacAccount> rbac = (HashMap<Integer, RbacAccount>) getServletContext().getAttribute("rbac");
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		HttpSession session = request.getSession();
 		String checkLogin = "重试";
 		
+		//取得ip
 		String ipaddress;
 		if (request.getHeader("x-forwarded-for") == null) {
 			ipaddress = request.getRemoteAddr();
@@ -45,23 +45,19 @@ public class UserLogin extends HttpServlet {
 				//把锁定用户重新激活
 				D_LoginLimit.doDeleteAll();
 				limit = D_LoginLimit.doSelectLimit(username);
+				
+				//如果限制数据库中没有我
 				if(limit == null) {
 					session.setAttribute("id", id);
-					if (rbac.get(id).getRole().contains("administrator")) {
-						response.sendRedirect("rbac/luser");
-					} else {
-						response.sendRedirect("frontend/nworkform");
-					}
+					response.sendRedirect("frontend/nworkform");
 					getServletContext().log("IP: "+ipaddress+" 登入成功: "+username);
 					return;
 				}else if (limit.getNumber() < 5) {
+					//如果小于5次
 					session.setAttribute("id", id);
-					if (rbac.get(id).getRole().contains("administrator")) {
-						response.sendRedirect("rbac/luser");
-					} else {
-						response.sendRedirect("frontend/nworkform");
-					}
-					D_LoginLimit.doDelete(username);
+					response.sendRedirect("frontend/nworkform");
+					D_LoginLimit.doDelete(username);  //清除我的密码填写错误次数
+					getServletContext().log("IP: "+ipaddress+" 登入成功: "+username);
 					return;
 				}else {
 					checkLogin = "已锁定";
@@ -83,8 +79,6 @@ public class UserLogin extends HttpServlet {
 			session.invalidate();
 			checkLogin = "登入";
 		}
-		
-
 		
 		if(username != null) {
 			getServletContext().log("IP: "+ipaddress+" 登入失败: "+username+" 状态: "+checkLogin);

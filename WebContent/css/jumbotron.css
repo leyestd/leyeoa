@@ -7,22 +7,27 @@ body {
 .divcss {
     width:290px;height:500px; overflow-y:scroll; border:1px solid #CCCCCC;
     padding: 20px;
+    cursor:pointer;
 }
 .rdivcss {
     width:250px;height:500px; overflow-y:scroll; border:1px solid #CCCCCC;
     padding: 20px;
+    cursor:pointer;
 }
 .cdivcss {
     width:240px;height:500px; overflow-y:scroll; border:1px solid #CCCCCC;
     padding: 20px;
+    cursor:pointer;
 }
 .qdivcss {
     width:300px;height:300px; overflow-y:scroll; border:1px solid #CCCCCC;
     padding: 20px;
+    cursor:pointer;
 }
 .udivcss {
     width:240px;height:360px; overflow-y:scroll; border:1px solid #CCCCCC;
     padding: 20px;
+    cursor:pointer;
 }
 .formdivcss {
     width:550px;height:500px; overflow-y:scroll; border:1px solid #CCCCCC;
@@ -30,10 +35,6 @@ body {
 }
 .libgcl {
 	background-color: #DEEFFF;
-}
-
-#droleuser li li ,#roleuser li li {
-	
 }
 
 #droleuser li li:hover ,#roleuser li li:hover ,#user li:hover,#role li:hover,#permission li:hover{

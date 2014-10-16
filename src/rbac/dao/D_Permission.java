@@ -82,6 +82,43 @@ public class D_Permission {
 	    }
 	}
 	
+	//查询所有控制器
+	public static ArrayList<Permission> doSelectAllControllerActions() {
+		ConnectionPool pool = ConnectionPool.getInstance();
+	    Connection connection = pool.getConnection();
+	    PreparedStatement ps=null;
+	    ResultSet rs=null;
+	    
+	    ArrayList<Permission> permissions=new ArrayList<Permission>();
+	    Permission p=null;
+	    String query = "SELECT id,name,alias,pid FROM permission";
+	    
+	    try {
+	    	ps = connection.prepareStatement(query);
+	 
+	    	rs=ps.executeQuery();
+	    	while(rs.next()) {
+	    		p=new Permission();
+	    		p.setId(rs.getInt("id"));
+	    		p.setName(rs.getString("name"));
+	    		p.setAlias(rs.getString("alias"));
+	    		p.setPid(rs.getInt("pid"));
+	    		permissions.add(p);
+	    	}
+	    	return permissions;
+	    }
+	    catch(SQLException e)
+	    {
+	        e.printStackTrace();
+	        return null;
+	    }
+	    finally
+	    {	DBUtil.closeResultSet(rs);
+	        DBUtil.closePreparedStatement(ps);
+	        pool.freeConnection(connection);
+	    }
+	}
+	
 	//查询此操作有没了下层
 		public static int doSelectChild(int pid) {
 			ConnectionPool pool = ConnectionPool.getInstance();

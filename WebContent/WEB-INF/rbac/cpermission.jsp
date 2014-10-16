@@ -31,24 +31,26 @@
 
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-10">
-						<button id="createPermission" type="button" class="btn btn-warning">提交</button>
+						<button id="createPermission" type="button" class="btn btn-danger">提交</button>
 					</div>
 				</div>
 			</form>
 		</div>
 		<div class="col-md-6">
 			<div class="divcss" id="permissionlist">
-				<h4>控制器</h4>
-				<ol>
+				 <div class="panel panel-danger">
+  					<div class="panel-heading">控制器</div>
+					<ul class="list-group">
 					<%
 						ArrayList<Permission> permissions=(ArrayList<Permission>)request.getAttribute("permissions");
 								for(Permission p : permissions) {
 					%>
-						<li data-permissionid="<%=p.getId()%>"><%=p.getAlias()%></li>
+						<li class="list-group-item list-group-item-warning" data-permissionid="<%=p.getId()%>"><%=p.getAlias()%></li>
 					<%
 						}
 					%>
-				</ol>
+				  </ul>
+				</div>
 			</div>
 		</div>
 	</div>

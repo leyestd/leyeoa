@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/jspf/backend/head.jsp"%>
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="rbac.javabean.AccountPermissionRole,java.util.ArrayList" %>
+<%@ page import="rbac.javabean.AccountPermissionRole,java.util.ArrayList,java.util.HashMap,rbac.javabean.Permission,java.util.Set" %>
 
 <div class="container">
 	<!-- Example row of columns -->
@@ -50,33 +50,35 @@
 			<h4>操作</h4>
 
 			<div class="cdivcss" id="permission">
-				<ol>
-				<%
-					ArrayList<AccountPermissionRole> permissions=(ArrayList<AccountPermissionRole>)request.getAttribute("permissions");
-						for(AccountPermissionRole permission : permissions)
-						{
-				%>
-					<li data-permissionid="<%=permission.getId()%>"><%=permission.getAlias()%></li>
 				
+				<%
+				HashMap<Permission,ArrayList<Permission>> ControllerActions=(HashMap<Permission,ArrayList<Permission>>)request.getAttribute("ControllerActions");
+				Set<Permission> roleskey=ControllerActions.keySet();
+				for(Permission key : roleskey) {	
+				%>
+					
+				  <div class="panel panel-warning">
+  					<div class="panel-heading"><%=key.getAlias() %></div>
+					<ul class="list-group">
+				<%	
+					for(Permission per : ControllerActions.get(key))
+					{%>
+						<li class="list-group-item list-group-item-success" data-permissionid="<%=per.getId()%>"><%=per.getAlias()%></li>
+					<% }%>
+					</ul>
+				  </div>
 				<% }%>
-				</ol>
-
-
 			</div>
 		</div>
+		
 		<div class="col-md-3">
 			<h4>已新增</h4>
 			<div class="cdivcss" id="crp">
 				<ol>
 
 				</ol>
-
-
 			</div>
 		</div>
-
-
-
 	</div>
 
 	<hr>
@@ -131,7 +133,7 @@
 					permissiont = $(this).text();
 			        $.post( "crelationship", { roleid: roleid, permissionid: permissionid}, function( data ) {
 			            if(data=="ok") {
-			            	$("#crp ol").append("<li>" + rolet + "-----" + permissiont + "</li>");
+			            	$("#crp ol").append("<li>" + rolet + "--" + permissiont + "</li>");
 			            }else{
 			            	alert("添加失败，您有角色关系存在");
 			            }

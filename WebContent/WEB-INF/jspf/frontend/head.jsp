@@ -50,6 +50,7 @@
                                 <li><a href="<%=basePath+"frontend/rmyapplication" %>">已申请</a></li>
                                 <li class="divider"></li>
                                 <li><a href="<%=basePath+"frontend/rannouncement" %>">公告</a></li>
+                                <li><a href="<%=basePath+"backend/lsysteminfo" %>">管理</a></li>
                             </ul>
                         </li>
                     </ul>
