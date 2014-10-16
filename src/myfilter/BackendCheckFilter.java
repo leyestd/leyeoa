@@ -1,6 +1,7 @@
 package myfilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.Filter;
@@ -34,23 +35,38 @@ public class BackendCheckFilter implements Filter {
 
 		ServletContext sc = filterConfig.getServletContext();
 		HashMap<Integer,RbacAccount> rbac=(HashMap<Integer,RbacAccount>)sc.getAttribute("rbac");
-		
+		HashMap<Integer,ArrayList<String>> ControllerActions=(HashMap<Integer,ArrayList<String>>)sc.getAttribute("actions");
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		HttpSession session = httpRequest.getSession();
-		String path = httpRequest.getContextPath();
-		String basePath = httpRequest.getScheme()+"://"+httpRequest.getServerName()+":"+httpRequest.getServerPort()+path+"/";
 		
-		if(session.getAttribute("id")==null) {
-			httpResponse.sendRedirect(basePath+"index.jsp");
-		}else {
-			int accountid=(Integer)httpRequest.getSession().getAttribute("id");
-			System.out.println(rbac.size());
-			if(rbac.get(accountid).getRole().contains(1000)) {
-				chain.doFilter(request, response);
-			}else {
-				httpResponse.sendRedirect(basePath+"index.jsp");
+		int id=0;
+		if(session.getAttribute("id") != null ) {
+			id=(Integer)session.getAttribute("id");
+		}
+		
+		//RBAC请求判断
+		boolean checked=false;
+		String URI=httpRequest.getRequestURI();
+		String requestAction = URI.substring(URI.indexOf("/", 1)+1);
+		ArrayList<Integer> roles=rbac.get(id).getRole();
+		for(int roleId : roles) {
+			ArrayList<String> actions=ControllerActions.get(roleId);
+			for(String action : actions) {
+				if(action.equals(requestAction))
+				{ checked= true ;
+					break;
+				}
 			}
+			if(checked == true) break;
+		}
+		
+		if(id == 0 || checked == false) {
+			String path = httpRequest.getContextPath();
+			String basePath = httpRequest.getScheme()+"://"+httpRequest.getServerName()+":"+httpRequest.getServerPort()+path+"/";
+			httpResponse.sendRedirect(basePath+"error.jsp");
+		}else {
+			chain.doFilter(request, response);
 		}
 	}
 

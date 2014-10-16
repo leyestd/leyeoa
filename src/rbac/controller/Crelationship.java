@@ -57,7 +57,7 @@ public class Crelationship extends HttpServlet {
 					}
 				}
 			}
-				System.out.println(DBpermissions.size());
+				
 			ArrayList<AccountPermissionRole> roles = D_Role.doSelectAll();
 			request.setAttribute("users", users);
 			request.setAttribute("ControllerActions", ControllerActions);
