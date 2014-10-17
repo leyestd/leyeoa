@@ -41,11 +41,10 @@ body {
 	background-color: #F7F7F7;
 }
 
-#drolepermission li li {
+.clicked {
 	
 }
-
-#drolepermission li li:hover {
+.clicked:hover {
 	background-color: #F7F7F7;
 }
 

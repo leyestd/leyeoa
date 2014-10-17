@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import rbac.javabean.Permission;
+import rbac.javabean.RbacPermission;
 import rbac.javabean.RbacRole;
 import database.ConnectionPool;
 import database.DBUtil;
@@ -86,44 +89,76 @@ public class D_Role_Permission {
 	    return count;
 	}
 	
-	public static HashMap<Integer,RbacRole> doSelectRolePermission() {
+	public static HashMap<Integer,RbacPermission> doSelectRolePermission() {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        HashMap<Integer , RbacRole> roles = new HashMap<Integer , RbacRole>(); 
+        HashMap<Integer , RbacPermission> roles = new HashMap<Integer , RbacPermission>(); 
         
         String query = 
-                "SELECT role.id,role.name,role.alias,permission.id,permission.alias FROM role " +
+                "SELECT role.id,role.name,role.alias,permission.id,permission.alias,p.id,p.alias FROM role " +
                         "inner join role_permission on role.id=role_permission.role_id " +
                         "inner join permission on role_permission.permission_id=permission.id " +
-                        "order by role.id";
+                        "inner join permission as p on permission.pid=p.id "+
+                        "order by role.id,p.id";
         try
-        {   
-
+        {         
+        	
+        	
+            //每个角色对应的信息和操作
+            RbacPermission role=new RbacPermission();
             
-            HashMap<Integer,String> permission=new HashMap<Integer,String>();        
+        	//控制器下所有的操作
+        	HashMap<String,ArrayList<Permission>> ControllerAction=new HashMap<String,ArrayList<Permission>>();
+        	
+        	//操作列表
+        	ArrayList<Permission> pers=new ArrayList<Permission>();
+        	
+        	//每个操作的信息
+            Permission permission=null;   
+            
             ps = connection.prepareStatement(query);
             rs = ps.executeQuery();
             int temp=0;
-            RbacRole role=new RbacRole();
+            String tempPalias="";
+            String tempRoleAlias="";
             
             while(rs.next()){
                 if(temp==0) { 
                     temp=rs.getInt("role.id");
+                    tempRoleAlias=rs.getString("role.alias");
                 }else if(temp!=rs.getInt("role.id")) {
-                    role.setPermission(permission);
+                	ControllerAction.put(tempPalias, pers);
+                	role.setAlias(tempRoleAlias);
+                    role.setPermission(ControllerAction);
                     roles.put(temp, role);
                     temp=rs.getInt("role.id");
-                    role=new RbacRole();
-                    permission=new HashMap<Integer,String>();
+                    tempRoleAlias=rs.getString("role.alias");
+                    role=new RbacPermission();
+                    pers=new ArrayList<Permission>();    
+                	ControllerAction=new HashMap<String,ArrayList<Permission>>();
+                	tempPalias="";
                 }
-                permission.put(rs.getInt("permission.id"), rs.getString("permission.alias"));
-                role.setName(rs.getString("role.name"));
-                role.setAlias(rs.getString("role.alias"));
+                
+                if(tempPalias.equals("")) {
+                	tempPalias=rs.getString("p.alias");
+                }else if(!tempPalias.equals(rs.getString("p.alias"))) {
+                	ControllerAction.put(tempPalias, pers);
+                	pers=new ArrayList<Permission>(); 
+                	tempPalias=rs.getString("p.alias");
+                	
+                }
+                permission=new Permission();
+                permission.setId(rs.getInt("permission.id"));
+                permission.setAlias(rs.getString("permission.alias"));
+                pers.add(permission);
+                
             }
             if(temp!=0) {
-                    role.setPermission(permission);
+            	    role.setAlias(tempRoleAlias);
+            		ControllerAction.put(tempPalias, pers);
+                    role.setPermission(ControllerAction);
                     roles.put(temp, role);
             }
             

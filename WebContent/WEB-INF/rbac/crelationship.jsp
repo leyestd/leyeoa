@@ -113,7 +113,7 @@
 			usert = $(this).data("fullname");
 	        $.post( "crelationship", { roleid: roleid, userid: userid}, function( data ) {
 	            if(data=="ok") {
-	            	$("#crp ol").append("<li>" + rolet + "-----" + usert + "</li>");
+	            	$("#crp ol").append("<li>" + rolet + "...." + usert + "</li>");
 	            }else{
 	            	alert("添加失败，您有角色关系存在");
 	            }
@@ -133,7 +133,7 @@
 					permissiont = $(this).text();
 			        $.post( "crelationship", { roleid: roleid, permissionid: permissionid}, function( data ) {
 			            if(data=="ok") {
-			            	$("#crp ol").append("<li>" + rolet + "--" + permissiont + "</li>");
+			            	$("#crp ol").append("<li>" + rolet + "...." + permissiont + "</li>");
 			            }else{
 			            	alert("添加失败，您有角色关系存在");
 			            }

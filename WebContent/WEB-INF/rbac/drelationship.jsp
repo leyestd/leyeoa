@@ -2,7 +2,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="rbac.javabean.AccountPermissionRole,java.util.ArrayList" %>
-<%@ page import="java.util.HashMap,rbac.javabean.RbacRole,java.util.Set" %>
+<%@ page import="java.util.HashMap,rbac.javabean.RbacRole,java.util.Set,rbac.javabean.RbacPermission,rbac.javabean.Permission" %>
 
 	<div class="container">
 		<h2 class="sub-header">删除关系</h2>
@@ -25,7 +25,7 @@
 									              Set<Integer> userskey=users.keySet();
 									              for(Integer userkey : userskey) {
 							%>
-				            	  <li data-userid="<%=userkey%>"><%=users.get(userkey)%></li>
+				            	  <li class="clicked" data-userid="<%=userkey%>"><%=users.get(userkey)%></li>
 				           <%
 				           	}
 				           %>
@@ -47,30 +47,43 @@
 
 			<div class="col-md-4">
 
-				<div class="divcss" id="drolepermission">
-					<ul class="list-unstyled">
+				<div class="divcss">
+					<ul class="list-unstyled" id="drolepermission">
 						<%
-							roles=(HashMap<Integer,RbacRole>)request.getAttribute("rolesPermission");
+						HashMap<Integer,RbacPermission> rolePermission=(HashMap<Integer,RbacPermission>)request.getAttribute("rolesPermission");
 									HashMap<Integer,String> permissions;
-									roleskey=roles.keySet();
-									for(Integer key : roleskey) {
+									roleskey=rolePermission.keySet();
+						for(Integer key : roleskey) {
 						%>
-						<li data-roleid="<%=key %>"><%=roles.get(key).getAlias() %></li>
-						<li>
+						<li data-roleid="<%=key %>"><%=rolePermission.get(key).getAlias() %>
+						
 							<ul>
 							<%
-					          permissions=(HashMap<Integer,String>)roles.get(key).getPermission();
-				              Set<Integer> permissionskey=permissions.keySet();
-				              for(Integer permissionkey : permissionskey) {
+							HashMap<String ,ArrayList<Permission>> ControllerAction=rolePermission.get(key).getPermission();
+							Set<String> controllerKey=ControllerAction.keySet();
+							
+							  
+					         for(String ckey : controllerKey) {				               
+					        %>
+					         <li><%=ckey %>
+			
+					         	<ul>
+					        <%	  
+				              for(Permission action : ControllerAction.get(ckey)) {
 				            %>
-				            	  <li data-permissionid="<%=permissionkey %>"><%=permissions.get(permissionkey) %></li>
+				            	  <li class="clicked" data-permissionid="<%=action.getId() %>"><%=action.getAlias() %></li>
 				           <%
 				              }
+					        
 							%>
-
+								</ul>
+							  
+   
+							<% }%>
 							</ul>
 
 						</li>
+						
 					<% } %>
 						
 					</ul>
@@ -128,32 +141,29 @@
 					 }else {
 						 alert("默认角色关系不可删");
 				 	}
-
-				
 				});
 				$("#deleteru").attr("disabled", "disabled");
 			}
 		});
 
 		
-		$("#drolepermission > ul > li:odd").hide();
+		$("#drolepermission > li > ul").hide();
 		$("#deleterp").attr("disabled", "disabled");
 
-		$("#drolepermission > ul > li:even").on("click", function() {
-			$("#drolepermission > ul > li:odd").hide();
-			$(this).next().show();
-
+		$("#drolepermission > li").on("click", function() {
+			$(this).children().show();
+			$(this).siblings().children().hide();
 		});
 
 		var permissionid, proleid;
 
-		$("#drolepermission li li").on("click", function() {
+		$(".clicked").on("click", function() {
 			$("#deleterp").removeAttr("disabled");
 			permissionid = $(this).data("permissionid");
-			$("#drolepermission li li").removeClass("libgcl");
+			$(".clicked").removeClass("libgcl");
 			$(this).addClass("libgcl");
 
-			proleid = $(this).parent().parent().prev().data("roleid");
+			proleid = $(this).parent().parent().parent().parent().data("roleid");
 		});
 
 		$("#deleterp").on("click", function() {

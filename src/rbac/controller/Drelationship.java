@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import rbac.RbacInitialize;
 import rbac.dao.D_Role_Account;
 import rbac.dao.D_Role_Permission;
+import rbac.javabean.RbacPermission;
 import rbac.javabean.RbacRole;
 import rbac.javabean.RbacAccount;
 
@@ -29,7 +30,7 @@ public class Drelationship extends HttpServlet {
 		String userid = request.getParameter("userid");
 		String permissionid = request.getParameter("permissionid");
 		HashMap<Integer, RbacRole> roles = (HashMap<Integer, RbacRole>)getServletContext().getAttribute("roles");
-		HashMap<Integer, RbacRole> rolesPermission = (HashMap<Integer, RbacRole>) D_Role_Permission.doSelectRolePermission();
+		HashMap<Integer, RbacPermission> rolesPermission = (HashMap<Integer, RbacPermission>) D_Role_Permission.doSelectRolePermission();
 		HashMap<Integer,RbacAccount> rbac=(HashMap<Integer,RbacAccount>)getServletContext().getAttribute("rbac");
 		if (roleid == null && proleid==null) {
 			request.setAttribute("rolesPermission", rolesPermission);

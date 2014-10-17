@@ -48,7 +48,6 @@ public class Lsysteminfo extends HttpServlet {
 		
 		HashMap<Integer,RbacAccount> rbac=(HashMap<Integer,RbacAccount>)getServletContext().getAttribute("rbac");
 		HashMap<Integer, RbacRole> roles = (HashMap<Integer, RbacRole>)getServletContext().getAttribute("roles");
-		HashMap<Integer, RbacRole> rolesPermission = (HashMap<Integer, RbacRole>) D_Role_Permission.doSelectRolePermission();
 		
 		String problemInfo[]=new String[3];
 
@@ -60,18 +59,7 @@ public class Lsysteminfo extends HttpServlet {
 			rbacRolekey= " WHERE id NOT IN ("+rbacRolekey.substring(0, rbacRolekey.length()-1)+")";
 		}
 		problemInfo[0]=D_SystemInfo.problemRoleAccount(rbacRolekey);  //未在系统中的角色-用户
-		
-		roleskey=rolesPermission.keySet();
-		rbacRolekey="";
-		for(Integer key : roleskey) {
-			rbacRolekey+=key+",";
-		}
-		if(!rbacRolekey.equals("")){
-			rbacRolekey= " WHERE id NOT IN ("+rbacRolekey.substring(0, rbacRolekey.length()-1)+")";
-		}
-		problemInfo[1]=D_SystemInfo.problemRolePermission(rbacRolekey);  //未在系统中的角色-操作
-		
-		
+			
 		Set<Integer> accountkey=rbac.keySet();
 		for(Integer key : accountkey) {
 			rbacAccountkey+=key+",";
@@ -113,8 +101,7 @@ public class Lsysteminfo extends HttpServlet {
 		infoName[6]="拒绝的工作流";
 		infoName[7]="未完成的工作流";
 		infoName[8]="未在系统中的角色-用户";
-		infoName[9]="未在系统中的角色-操作";
-		infoName[10]="未在系统中的用户";
+		infoName[9]="未在系统中的用户";
 			
 		
 		request.setAttribute("problemInfo", problemInfo);

@@ -43,48 +43,43 @@
 							<td>ID&nbsp;[<%=problemInfo[0] %>]</td>
 						</tr>
 						<tr class="danger">
-							<td>9</td>	
+							<td>9</td>
 							<td><%=infoName[9] %></td>
 							<td>ID&nbsp;[<%=problemInfo[1] %>]</td>
 						</tr>
-						<tr class="danger">
-							<td>10</td>
-							<td><%=infoName[10] %></td>
-							<td>ID&nbsp;[<%=problemInfo[2] %>]</td>
-						</tr>
 						
 						<tr class="warning">
-							<td>11</td>
+							<td>10</td>
 							<td>角色(DepartmentForm) </td>
 							<td>显示当前默认角色中的单据</td>
 						</tr>
 						<tr class="warning">
-							<td>12</td>
+							<td>11</td>
 							<td>操作(DepartmentFormDisplay)</td>
 							<td>显示部门单据</td>
 						</tr>
 						<tr class="warning">
-							<td>13</td>
+							<td>12</td>
 							<td>角色 (Approval)</td>
 							<td>审批的用户</td>
 						</tr>
 						<tr class="warning">
-							<td>14</td>
+							<td>13</td>
 							<td>操作(ApprovalWorkflow)</td>
 							<td>审批单据</td>
 						</tr>
 						<tr class="warning">
-							<td>15</td>
+							<td>14</td>
 							<td>角色(SeparatedEmployees)</td>
 							<td>系统离职员工</td>
 						</tr>
 						<tr class="warning">
-							<td>16</td>
+							<td>15</td>
 							<td>操作(CannotLogIn)</td>
 							<td>不能登入</td>
 						</tr>						
 						<tr class="warning">
-							<td>17</td>
+							<td>16</td>
 							<td>操作(ApplyFor)</td>
 							<td>申请单据,使rbac关联查询生效</td>
 						</tr>
