@@ -55,7 +55,7 @@
 									roleskey=rolePermission.keySet();
 						for(Integer key : roleskey) {
 						%>
-						<li data-roleid="<%=key %>"><%=rolePermission.get(key).getAlias() %>
+						<li class="rolestyle" data-roleid="<%=key %>"><%=rolePermission.get(key).getAlias() %>
 						
 							<ul>
 							<%
@@ -163,7 +163,7 @@
 			$(".clicked").removeClass("libgcl");
 			$(this).addClass("libgcl");
 
-			proleid = $(this).parent().parent().parent().parent().data("roleid");
+			proleid = $(this).closest(".rolestyle").data("roleid");
 		});
 
 		$("#deleterp").on("click", function() {
