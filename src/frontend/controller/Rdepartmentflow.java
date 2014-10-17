@@ -26,10 +26,8 @@ public class Rdepartmentflow extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		int accountid = (Integer) request.getSession().getAttribute("id");
-		HashMap<Integer, RbacAccount> rbac = (HashMap<Integer, RbacAccount>) getServletContext()
-				.getAttribute("rbac");
-		HashMap<Integer, RbacRole> roles = (HashMap<Integer, RbacRole>) getServletContext()
-				.getAttribute("roles");
+		HashMap<Integer, RbacAccount> rbac = (HashMap<Integer, RbacAccount>) getServletContext().getAttribute("rbac");
+		HashMap<Integer, RbacRole> roles = (HashMap<Integer, RbacRole>) getServletContext().getAttribute("roles");
 
 		// 可审批用户都可查询本部已审批单据
 

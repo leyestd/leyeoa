@@ -49,7 +49,7 @@ public class Modifyflow extends HttpServlet {
 				String roleflowArray[];
 				int status=0;	//0 没变 1成功完成  2拒绝
 				
-				StringBuffer sb = new StringBuffer();
+				StringBuilder sb = new StringBuilder();
 				
 				if(workflow.getAccountflow()==null) {
 					accountflow=String.valueOf(accountid);

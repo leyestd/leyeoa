@@ -63,7 +63,7 @@ public class Nworkflow extends HttpServlet {
 					roleflow = mWorkflow.substring(2);
 					custom = "t";
 				} else {
-
+					//3，4，6，7  我有 6 只需 7 签，类推
 					String workflow[] = mWorkflow.split(",");
 					roleflow = workflow[workflow.length - 1];
 					for (int i = workflow.length - 2; i >= 0; i--) {
