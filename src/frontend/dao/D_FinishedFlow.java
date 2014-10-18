@@ -77,6 +77,7 @@ public class D_FinishedFlow {
 			e.printStackTrace();
 			return null;
 		} finally {
+			DBUtil.closeResultSet(rs);
 			DBUtil.closePreparedStatement(ps);
 			pool.freeConnection(connection);
 		}

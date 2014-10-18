@@ -42,6 +42,7 @@ public class D_DetailMyApplication {
 			e.printStackTrace();
 			return null;
 		} finally {
+			DBUtil.closeResultSet(rs);
 			DBUtil.closePreparedStatement(ps);
 			pool.freeConnection(connection);
 		}

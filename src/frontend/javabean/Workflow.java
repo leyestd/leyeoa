@@ -1,6 +1,16 @@
 package frontend.javabean;
 
 public class Workflow {
+	String custom;
+	
+	public String getCustom() {
+		return custom;
+	}
+
+	public void setCustom(String custom) {
+		this.custom = custom;
+	}
+
 	public int getId() {
 		return id;
 	}

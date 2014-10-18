@@ -26,7 +26,7 @@
 											if (rows == null) {
 						%>
 						<tr>
-							<td class="text-center">没有相关记录</td>
+							<td class="text-center" colspan="3">没有相关记录</td>
 						</tr>
 						<%
 							} else {

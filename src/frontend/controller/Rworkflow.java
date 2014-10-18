@@ -13,86 +13,69 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import frontend.dao.D_Workflow;
+import frontend.javabean.Workflow;
 import rbac.dao.D_Role_Hierarchy;
 import rbac.javabean.RbacAccount;
 import rbac.javabean.RbacRole;
 import tool.Pagination;
-
+import tool.CheckPermission;
 /**
  * Servlet implementation class Rworkflow
  */
 public class Rworkflow extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+
+		int accountId = (Integer) request.getSession().getAttribute("id");
+		HashMap<Integer, RbacAccount> rbac = (HashMap<Integer, RbacAccount>) getServletContext().getAttribute("rbac");
+		HashMap<Integer, RbacRole> roles = (HashMap<Integer, RbacRole>) getServletContext().getAttribute("roles");
+
+		//查询所有待审的表单
+		ArrayList<Workflow> workflows= D_Workflow.doSelectReady();
+
+		System.out.println(workflows.size());
+		StringBuilder readyFor=new StringBuilder();
+		boolean check=false;
 		
-		int accountid=(Integer)request.getSession().getAttribute("id");
-		HashMap<Integer,RbacAccount> rbac=(HashMap<Integer,RbacAccount>)getServletContext().getAttribute("rbac");
-		HashMap<Integer, RbacRole> roles = (HashMap<Integer, RbacRole>)getServletContext().getAttribute("roles");
-		
-		boolean approval=false;
-		int approvalRoleId=0;
-		
-		//如果用户有approval角色
-		if(rbac.get(accountid).getRole().contains("Approval")) {
-			approval=true;
-		}else {
-			Set<Integer> roleskey = roles.keySet();
-			for (Integer key : roleskey) {
-				//可审批角色ID存起来备用
-				if(roles.get(key).getName().equals("Approval"))	{
-					approvalRoleId=key;
-					break;
-				}
-			}
-			//可审批角色下的角色内的用户是否有当前用户
-			if(approvalRoleId != 0) {
-				ArrayList<Integer> basicRole=D_Role_Hierarchy.doSelectAdvanced(approvalRoleId);
-				for(int id : basicRole) {
-					if(roles.get(id).getUser().containsKey(accountid)) {
-						approval=true;
-						break;
-					}
-				}
-			}
+		for ( Workflow workflow : workflows) { 
+			check=CheckPermission.doCheckPermisson(workflow, accountId, rbac,roles);
 		}
 		
-		if(approval==true) {
-			String readyFor=D_Workflow.doSelectReady(accountid, rbac, roles);
 		
-			System.out.println(readyFor);
-		
-			if(readyFor!=null) {
-				readyFor=" WHERE id IN ("+readyFor+")";
-			
-				int pageNumber;
-				if (request.getParameter("pageNumber") == null) {
-					pageNumber = 1;
-				} else {
-					pageNumber = Integer.valueOf(request.getParameter("pageNumber"));
-				}
+		/*
+		if (readyFor != null) {
+			readyFor = " WHERE id IN (" + readyFor + ")";
 
-				Pagination page = new Pagination(pageNumber, 2, "workflow",readyFor);
-
-				if (page.getTotal() != 0) {
-					String[] columns = { "id", "name","account_id","createtime"};
-					List<ArrayList<Object>> rows = page.getRows(columns);
-					request.setAttribute("rows", rows);
-					request.setAttribute("pageNumber", pageNumber);
-					request.setAttribute("countPage", page.getCountPage());
-				}
+			int pageNumber;
+			if (request.getParameter("pageNumber") == null) {
+				pageNumber = 1;
+			} else {
+				pageNumber = Integer
+						.valueOf(request.getParameter("pageNumber"));
 			}
-		}else {
-			request.setAttribute("approval", "denied");
+
+			Pagination page = new Pagination(pageNumber, 2, "workflow",
+					readyFor);
+
+			if (page.getTotal() != 0) {
+				String[] columns = { "id", "name", "account_id", "createtime" };
+				List<ArrayList<Object>> rows = page.getRows(columns);
+				request.setAttribute("rows", rows);
+				request.setAttribute("pageNumber", pageNumber);
+				request.setAttribute("countPage", page.getCountPage());
+			}
 		}
-		
+
 		String url = "/WEB-INF/frontend/rworkflow.jsp";
 		RequestDispatcher dispatcher = getServletContext()
-			.getRequestDispatcher(url);
+				.getRequestDispatcher(url);
 		dispatcher.forward(request, response);
+	*/
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		this.doGet(request, response);
 	}
 
