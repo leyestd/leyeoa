@@ -283,5 +283,34 @@ public class D_Department {
 	    return count;
 	}
 	
-	
+	//显示部门下所有用户
+	public static ArrayList<Integer> doSelectDepartmentAccount(int depid) {
+		ConnectionPool pool = ConnectionPool.getInstance();
+	    Connection connection = pool.getConnection();
+	    PreparedStatement ps=null;
+	    ResultSet rs=null;
+	    ArrayList<Integer> DepAccounts=new ArrayList<Integer>();
+	    
+	    String query = "SELECT account.id FROM department INNER JOIN account on department.id = account.department_id WHERE department.id=?";
+	    
+	    try {
+	    	ps = connection.prepareStatement(query);
+	    	ps.setInt(1, Integer.valueOf(depid));
+	    	rs=ps.executeQuery();
+	    	while(rs.next()) {
+	    		DepAccounts.add(rs.getInt("account.id"));
+	    	}
+	    	return DepAccounts;
+	    }
+	    catch(SQLException e)
+	    {
+	        e.printStackTrace();
+	        return null;
+	    }
+	    finally
+	    {	DBUtil.closeResultSet(rs);
+	        DBUtil.closePreparedStatement(ps);
+	        pool.freeConnection(connection);
+	    }
+	}
 }

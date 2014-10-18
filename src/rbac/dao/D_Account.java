@@ -212,4 +212,41 @@ public class D_Account {
 	    }
 	    return count;
 	}
+
+	public static Account doSelect(int id) {
+		ConnectionPool pool = ConnectionPool.getInstance();
+	    Connection connection = pool.getConnection();
+	    PreparedStatement ps=null;
+	    ResultSet rs=null;
+	    Account user=new Account();
+	    String query = "SELECT id,username, password, email, fullname, enabled ,department_id FROM account WHERE id=?";
+	    
+	    try {
+	    	ps = connection.prepareStatement(query);
+	    	ps.setInt(1,id);
+	    	rs=ps.executeQuery();
+	    	if(rs.next()) {
+	    		user.setId(rs.getInt("id"));
+	    		user.setUsername(rs.getString("username"));
+	    		user.setFullname(rs.getString("fullname"));
+	    		user.setEmail(rs.getString("email"));
+	    		user.setPassword(rs.getString("password"));
+	    		user.setEnable(rs.getInt("enabled"));
+	    		user.setDepid(rs.getInt("department_id"));
+	    	}
+	    	return user;
+	    }
+	    catch(SQLException e)
+	    {
+	        e.printStackTrace();
+	        return null;
+	    }
+	    finally
+	    {	DBUtil.closeResultSet(rs);
+	        DBUtil.closePreparedStatement(ps);
+	        pool.freeConnection(connection);
+	    }
+	}
+	
+	
 }
