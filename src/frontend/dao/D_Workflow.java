@@ -80,8 +80,8 @@ public class D_Workflow {
 		return workflows;
 	}
 
-	public static Workflow doSelectDetail(int accountid,int flowid,
-		HashMap<Integer, RbacAccount> rbac, HashMap<Integer, RbacRole> roles) {
+	//工作流详细内容
+	public static Workflow doSelectDetail( int flowid ) {
 		ConnectionPool pool = ConnectionPool.getInstance();
 		Connection connection = pool.getConnection();
 		PreparedStatement ps = null;
@@ -89,56 +89,22 @@ public class D_Workflow {
 		Workflow workflow=null;
 		String query = "SELECT id,name,roleflow,accountflow,content,account_id,createtime,custom FROM workflow WHERE status=0 and id=?";
 		
-
 		try {
 			ps = connection.prepareStatement(query);
 			ps.setInt(1, flowid);
 			rs = ps.executeQuery();
-//			if (rs.next()) {
-//				boolean check = false;
-//				String roleflow = rs.getString("roleflow");
-//				int flow = Integer.valueOf(roleflow.split(",")[0]);
-//
-//				// 如果表单为角色流
-//				if (rs.getString("custom").equals("f")) {
-//					try {
-//						//如果我有此角色
-//						if (rbac.get(accountid).getRole().contains(roles.get(flow).getName())) {
-//							
-//							// 我的ID的默认角色
-//							int defaultRoleId=rbac.get(rs.getInt("account_id")).getDefault_roleid();
-//							//流的角色名
-//							String roleName=roles.get(flow).getName();
-//							//递归检查
-//							check=doCheckPermisson(defaultRoleId,accountid,roleName,rbac,roles);
-//							if(check==false) {
-//								check=doCheckPermisson(defaultRoleId,accountid,roles);
-//							}
-//						}
-//					} catch (NullPointerException e) {
-//						e.printStackTrace();
-//						check = false;
-//					}
-//				} else {
-//					if(accountid==flow) {
-//						check=true;
-//					}
-//				}
-//
-//				if (check == true) {
-//					workflow=new Workflow();
-//					workflow.setId(rs.getInt("id"));
-//					workflow.setName(rs.getString("name"));
-//					workflow.setRoleflow(rs.getString("roleflow"));
-//					workflow.setAccountflow(rs.getString("accountflow"));
-//					workflow.setContent(rs.getString("content"));
-//					workflow.setAccount_id(rs.getInt("account_id"));
-//					SimpleDateFormat f=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//					rs.getDate("createtime");
-//					workflow.setCreatetime(f.format(rs.getDate("createtime")));
-//				}
-//
-//			}
+			if (rs.next()) {	
+					workflow=new Workflow();
+					workflow.setId(rs.getInt("id"));
+					workflow.setName(rs.getString("name"));
+					workflow.setRoleflow(rs.getString("roleflow"));
+					workflow.setAccountflow(rs.getString("accountflow"));
+					workflow.setContent(rs.getString("content"));
+					workflow.setAccount_id(rs.getInt("account_id"));
+					SimpleDateFormat f=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+					rs.getDate("createtime");
+					workflow.setCreatetime(f.format(rs.getDate("createtime")));
+			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -150,6 +116,7 @@ public class D_Workflow {
 		}
 		return workflow;
 	}
+	
 	
 	public static int doModifyWorkflow(String flowid, String content,String accountflow,String roleflow,int status) {
 		ConnectionPool pool = ConnectionPool.getInstance();

@@ -38,17 +38,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						<%
-							HashMap<Integer,RbacAccount> rbac=(HashMap<Integer,RbacAccount>)getServletContext().getAttribute("rbac");
-							List<ArrayList<Object>> rows;
-							rows = (List<ArrayList<Object>>) request.getAttribute("rows");
-							if (request.getAttribute("approval")!=null) {
-						%>
-						<tr>
-							<td class="text-center" colspan="5">您没有相关权限</td>
-						</tr>
-						<%
-							}else if(rows == null) { 
+						<% 
+						HashMap<Integer,RbacAccount> rbac=(HashMap<Integer,RbacAccount>)getServletContext().getAttribute("rbac");
+						List<ArrayList<Object>> rows = (List<ArrayList<Object>>) request.getAttribute("rows");
+
+						if(rows == null) { 
 							%>
 						<tr>
 							<td class="text-center" colspan="5">没有相关记录</td>

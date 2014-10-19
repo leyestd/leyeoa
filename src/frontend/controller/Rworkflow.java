@@ -27,21 +27,20 @@ public class Rworkflow extends HttpServlet {
 
 		int accountId = (Integer) request.getSession().getAttribute("id");
 		HashMap<Integer, RbacAccount> rbac = (HashMap<Integer, RbacAccount>) getServletContext().getAttribute("rbac");
-		HashMap<Integer, RbacRole> roles = (HashMap<Integer, RbacRole>) getServletContext().getAttribute("roles");
+		
 
 		//查询所有待审的表单
 		ArrayList<Workflow> workflows= D_Workflow.doSelectReady();
 
-		System.out.println(workflows.size());
 		StringBuilder readyFor=new StringBuilder();
 		boolean check=false;
 		
 		
 		for ( Workflow workflow : workflows) { 
-			check=CheckPermission.doCheckPermisson(workflow, accountId, rbac,roles);
+			check=CheckPermission.doCheckPermisson(workflow, accountId, rbac);
 			if(check) {
-				int flowRoleId = Integer.valueOf(workflow.getRoleflow().split(",")[0]);
-				readyFor.append(flowRoleId+",");			
+				int flowId = workflow.getId();
+				readyFor.append( flowId+",");			
 			}
 		}
 		
@@ -51,6 +50,8 @@ public class Rworkflow extends HttpServlet {
 			myReadyFor = readyFor.toString();
 			myReadyFor = myReadyFor.substring(0,readyFor.length() - 1);
 		}
+		
+		System.out.println(myReadyFor);
 		
 		if (myReadyFor != null) {
 			myReadyFor = " WHERE id IN (" + myReadyFor + ")";
@@ -63,7 +64,7 @@ public class Rworkflow extends HttpServlet {
 			}
 
 			Pagination page = new Pagination(pageNumber, 2, "workflow",myReadyFor);
-
+			System.out.println(page.getTotal());
 			if (page.getTotal() != 0) {
 				String[] columns = { "id", "name", "account_id", "createtime" };
 				List<ArrayList<Object>> rows = page.getRows(columns);
