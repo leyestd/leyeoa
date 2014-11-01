@@ -27,7 +27,7 @@ public class Test {
 	
 //	String[] str = {"abc", "bcd", "def"};
 //	StringBuffer sb = new StringBuffer();
-//	for(int i = 0; i < str.length; i++){
+//	for(int i  = 0; i < str.length; i++){
 //	 sb. append(str[i]);
 //	}
 	//HashMap<Integer,RbacAccount> rbac=(HashMap<Integer,RbacAccount>)getServletContext().getAttribute("rbac");
