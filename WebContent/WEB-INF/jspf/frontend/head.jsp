@@ -2,7 +2,9 @@
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+	String id=(session.getAttribute("id")!=null)?("?id="+session.getAttribute("id")):"";
 %>
+<%@page import="tool.URLUtil" %>
 <!DOCTYPE html>
 <html lang="zh">
     <head>
@@ -39,7 +41,7 @@
 
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="<%=basePath+"frontend/rworkflow" %>">审批</a></li>
+                        <li><a href="<%=basePath+"frontend/rworkflow" %>">审批<span class="badge"><%=URLUtil.getHtml(basePath+"countworkflow"+id) %></span></a></li>
                         <li><a href="<%=basePath+"frontend/nworkform" %>">申请</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">内容<b class="caret"></b></a>
@@ -50,9 +52,11 @@
                                 <li><a href="<%=basePath+"frontend/rmyapplication" %>">已申请</a></li>
                                 <li class="divider"></li>
                                 <li><a href="<%=basePath+"frontend/rannouncement" %>">公告</a></li>
+                                <li><a href="<%=basePath+"frontend/modifydelegate" %>">委托</a></li>
                                 <li><a href="<%=basePath+"backend/lsysteminfo" %>">管理</a></li>
                             </ul>
                         </li>
+                        <li><a href="<%=basePath+"frontend/nworkform" %>">消息</a></li>
                     </ul>
 
                       

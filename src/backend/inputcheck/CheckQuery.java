@@ -83,7 +83,7 @@ public class CheckQuery {
 			 month= month.trim();
 			 tense=tense.trim();
 			
-			if(queryType.length()< 5 || queryType.length()>7 ) {
+			if(queryType.length()< 7 || queryType.length()>10 ) {
 				return "查询类型长度不符";
 			}else if(status.length()!=1) {
 				return "状态 长度不符";

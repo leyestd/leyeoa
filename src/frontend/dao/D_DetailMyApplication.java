@@ -48,4 +48,35 @@ public class D_DetailMyApplication {
 		}
 		return workflow;
 	}
+	
+//	//部门角色用户
+//	public static String doSelectDepartmentRoleAccount(int accountid) {
+//		ConnectionPool pool = ConnectionPool.getInstance();
+//		Connection connection = pool.getConnection();
+//		PreparedStatement ps = null;
+//		ResultSet rs = null;
+//		String accountInfo=null;
+//		String query = "SELECT account.fullname,role.alias,department.alias FROM account "
+//				+ "INNER JOIN role ON default_roleid=role.id "
+//				+ "INNER JOIN department ON department.id=department_id WHERE account.id=?";
+//		
+//		try {
+//			ps = connection.prepareStatement(query);
+//			ps.setInt(1, accountid );
+//			rs = ps.executeQuery();
+//			if (rs.next()) {
+//				accountInfo=rs.getString("department.alias")+"-"+
+//				rs.getString("role.alias")+"-"+
+//				rs.getString("account.fullname");
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//			return null;
+//		} finally {
+//			DBUtil.closeResultSet(rs);
+//			DBUtil.closePreparedStatement(ps);
+//			pool.freeConnection(connection);
+//		}
+//		return accountInfo;
+//	}
 }

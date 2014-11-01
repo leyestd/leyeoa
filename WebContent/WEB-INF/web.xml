@@ -648,4 +648,24 @@
     <servlet-name>Dpermission</servlet-name>
     <url-pattern>/rbac/dpermission</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Modifydelegate</display-name>
+    <servlet-name>Modifydelegate</servlet-name>
+    <servlet-class>frontend.controller.Modifydelegate</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Modifydelegate</servlet-name>
+    <url-pattern>/frontend/modifydelegate</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Countworkflow</display-name>
+    <servlet-name>Countworkflow</servlet-name>
+    <servlet-class>frontend.controller.Countworkflow</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Countworkflow</servlet-name>
+    <url-pattern>/countworkflow</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -14,6 +14,8 @@ public class RbacAccount {
 	}
 
 	private String fullname;
+	private int departmentId;
+	
 	private ArrayList<Integer> role;
 
 	public RbacAccount() {
@@ -33,6 +35,14 @@ public class RbacAccount {
 
 	public void setFullname(String fullname) {
 		this.fullname = fullname;
+	}
+
+	public int getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(int departmentId) {
+		this.departmentId = departmentId;
 	}
 
 }

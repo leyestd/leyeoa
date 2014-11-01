@@ -4,17 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import rbac.dao.D_Role_Hierarchy;
 import rbac.javabean.RbacAccount;
-import rbac.javabean.RbacRole;
 import tool.Pagination;
 
 /**
@@ -23,12 +18,10 @@ import tool.Pagination;
 public class Rdepartmentflow extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
 		int accountid = (Integer) request.getSession().getAttribute("id");
 		HashMap<Integer, RbacAccount> rbac = (HashMap<Integer, RbacAccount>) getServletContext().getAttribute("rbac");
-		HashMap<Integer, RbacRole> roles = (HashMap<Integer, RbacRole>) getServletContext().getAttribute("roles");
-
+		int depId=rbac.get(accountid).getDepartmentId();
 		// 可审批用户都可查询本部已审批单据
 
 		int pageNumber;
@@ -37,15 +30,12 @@ public class Rdepartmentflow extends HttpServlet {
 		} else {
 			pageNumber = Integer.valueOf(request.getParameter("pageNumber"));
 		}
-
-		String condition = " WHERE roleflow REGEXP '^"
-				+ 1
-				+ "(,[[:digit:]]+)*$' AND status != 0 AND custom = 'f' ORDER BY id DESC";
+ 
+		String condition = " WHERE roleflow REGEXP '^"+ depId + "(,[[:digit:]]+)*$' AND status !=0 AND custom = 'f' ORDER BY id DESC";
 		Pagination page = new Pagination(pageNumber, 10, "workflow", condition);
 
 		if (page.getTotal() != 0) {
-			String[] columns = { "id", "name", "account_id", "createtime",
-					"status" };
+			String[] columns = { "id", "name", "account_id", "createtime","status" };
 			List<ArrayList<Object>> rows = page.getRows(columns);
 			request.setAttribute("rows", rows);
 			request.setAttribute("pageNumber", pageNumber);

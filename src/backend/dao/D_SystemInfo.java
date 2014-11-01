@@ -168,7 +168,7 @@ public class D_SystemInfo {
 		String problemInfo ="";
 		
 		String query = "SELECT id FROM role"+condition;
-		System.out.println(query);
+		//System.out.println(query);
 		try {
 			ps = connection.prepareStatement(query);
 			rs = ps.executeQuery();
@@ -196,7 +196,7 @@ public class D_SystemInfo {
 		String problemInfo ="";
 		
 		String query = "SELECT id FROM role"+condition;
-		System.out.println(query);
+		//System.out.println(query);
 		try {
 			ps = connection.prepareStatement(query);
 			rs = ps.executeQuery();
@@ -224,7 +224,7 @@ public class D_SystemInfo {
 		String problemInfo ="";
 		
 		String query = "SELECT id FROM account"+condition;
-		System.out.println(query);
+		//System.out.println(query);
 		try {
 			ps = connection.prepareStatement(query);
 			rs = ps.executeQuery();

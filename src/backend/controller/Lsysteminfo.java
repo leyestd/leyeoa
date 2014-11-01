@@ -38,13 +38,6 @@ public class Lsysteminfo extends HttpServlet {
 		int unfinishedWorkflowCount=0;
 		String rbacRolekey="";
 		String rbacAccountkey="";
-		/*
-		 *   系统关键字  Departmentform （部门单据） 可查当前默认角色部门中的单据  对应操作 DepartmentFormDisplay 	显示部门单据
-		 * 	  系统关键字    Approval 可审批的用户  对应操作 ApprovalWorkflow  审批流程 
-		 * 	  系统管理员	administrator 默认存在    对应操作   Admin 	管理后台 
-		 * 	  系统离职员工 SeparatedEmployees	 对应操作  不能登入
-		 * 	 ApplyFor 	申请单据  给所有没有其它操作的角色  让关联查询生效
-		 */
 		
 		HashMap<Integer,RbacAccount> rbac=(HashMap<Integer,RbacAccount>)getServletContext().getAttribute("rbac");
 		HashMap<Integer, RbacRole> roles = (HashMap<Integer, RbacRole>)getServletContext().getAttribute("roles");

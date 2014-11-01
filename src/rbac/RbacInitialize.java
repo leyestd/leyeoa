@@ -40,7 +40,7 @@ public class RbacInitialize {
         HashMap<Integer , RbacAccount> rbac = new HashMap<Integer , RbacAccount>(); 
         
         String query = 
-                "SELECT account.id,account.fullname,account.default_roleid,role.id FROM account " +
+                "SELECT account.id,account.fullname,account.default_roleid,role.id,department_id FROM account " +
                         "INNER JOIN account_role ON account.id= account_role.account_id " +
                         "INNER JOIN role ON account_role.role_id=role.id ORDER BY account.id";
         try
@@ -71,6 +71,7 @@ public class RbacInitialize {
                 
                 u.setFullname(rs.getString("account.fullname"));
                 u.setDefault_roleid(rs.getInt("default_roleid"));
+                u.setDepartmentId(rs.getInt("department_id"));
                // System.out.println(rs.getInt("account.id")+ "  | "+rs.getString("role.name")+" | "+rs.getString("permission.name"));
             }
             if(temp!=0) {                  

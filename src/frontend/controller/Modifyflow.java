@@ -1,6 +1,7 @@
 package frontend.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.ServletException;
@@ -9,8 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import rbac.javabean.RbacAccount;
-import rbac.javabean.RbacRole;
+import tool.CheckPermission;
+import frontend.dao.D_Delegate;
 import frontend.dao.D_Workflow;
+import frontend.javabean.Delegate;
 import frontend.javabean.Workflow;
 
 /**
@@ -22,26 +25,41 @@ public class Modifyflow extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		HashMap<Integer,RbacAccount> rbac=(HashMap<Integer,RbacAccount>)getServletContext().getAttribute("rbac");
-		HashMap<Integer, RbacRole> roles = (HashMap<Integer, RbacRole>)getServletContext().getAttribute("roles");
 		
 		String flowid=request.getParameter("flowid");
 		
 		int accountid=(Integer)request.getSession().getAttribute("id");
+		
+		//委托我的所有用户
+		ArrayList<Delegate> DelegateList = D_Delegate.doSelectDelegate(accountid);
 		Workflow workflow=null;
 		int count=0;
 		
 		//检测是不有权限
-		if(flowid != null) {
-			workflow=D_Workflow.doSelectDetail(accountid, Integer.valueOf(flowid), rbac, roles);	
+		boolean check=false;
+		int delegateAccountId = accountid;
+		
+		if (flowid != null) {	
+			workflow = D_Workflow.doSelectDetail(Integer.valueOf(flowid));
 		}
-		
-		System.out.println(workflow.getName());
-		
+		if(workflow!=null) {
+			check=CheckPermission.doCheckPermisson(workflow,accountid, rbac);
+			if(!check) {
+				for (Delegate delegate : DelegateList) {
+					check=CheckPermission.doCheckPermisson(workflow, delegate.getAccountId(), rbac);
+					if(check) {
+						delegateAccountId=delegate.getAccountId();
+						break;
+					}
+				}
+			}
+		}
+
 		String decision=request.getParameter("decision");
 		String content=request.getParameter("editor1");
 		
 		
-		if(decision!= null && content !=null && workflow != null) {
+		if(decision!= null && content !=null && workflow != null && check) {
 			if(decision.equals("agree") || decision.equals("reject")) {
 								
 				String accountflow;
@@ -52,17 +70,25 @@ public class Modifyflow extends HttpServlet {
 				StringBuilder sb = new StringBuilder();
 				
 				if(workflow.getAccountflow()==null) {
-					accountflow=String.valueOf(accountid);
+					if(delegateAccountId != accountid) {
+						accountflow=delegateAccountId+"-"+String.valueOf(accountid);
+					}else {
+						accountflow=String.valueOf(accountid);
+					}
 				}else{
-					accountflow=String.valueOf(accountid)+","+workflow.getAccountflow();
+					if(delegateAccountId != accountid) {
+						accountflow=delegateAccountId+"-"+String.valueOf(accountid)+","+workflow.getAccountflow();
+					}else {
+						accountflow=String.valueOf(accountid)+","+workflow.getAccountflow();
+					}
 				}
 					
 				roleflowArray=workflow.getRoleflow().split(",");
 				if(roleflowArray.length == 1) {
 					status = 1;
-					roleflow=roleflowArray[0];
+					roleflow=String.valueOf(rbac.get(accountid).getDepartmentId());
 					//roleflow=""; 保留最后一位角色，为单据存放部门
-				}else {
+				} else {
 					for(int i = 1; i < roleflowArray.length; i++){
 						 sb.append(roleflowArray[i]+",");
 					}
@@ -72,6 +98,7 @@ public class Modifyflow extends HttpServlet {
 				
 				if(decision.equals("reject")) {
 					status = 2;
+					roleflow=String.valueOf(rbac.get(accountid).getDepartmentId());
 				}
 				
 				count=D_Workflow.doModifyWorkflow(flowid, content, accountflow, roleflow, status);	

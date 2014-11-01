@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import tool.Pagination;
+import backend.dao.D_Department;
 import backend.inputcheck.CheckQuery;
+import backend.javabean.Department;
 
 /**
  * Servlet implementation class Queryworkflow
@@ -27,7 +29,6 @@ public class Queryworkflow extends HttpServlet {
 		String month=request.getParameter("month");
 		String tense=request.getParameter("tense");
 
-		
 		String checked=CheckQuery.doCheckNull(queryType, status, year, month, tense);
 		
 		if(checked.equals("ok")) {
@@ -40,7 +41,7 @@ public class Queryworkflow extends HttpServlet {
 		}
 		
 		if(checked.equals("ok")) {
-			
+					
 			int pageNumber;
 			if (request.getParameter("pageNumber") == null) {
 				pageNumber = 1;
@@ -51,7 +52,7 @@ public class Queryworkflow extends HttpServlet {
 			String condition="";
 			String cQueryType="";
 			String cStatus="";
-			String cCustom="";
+			//String cCustom="";
 			String cDate="'"+year+"-"+month+"-1"+"'";
 			String cOrder="ORDER BY id DESC";
 			
@@ -62,17 +63,18 @@ public class Queryworkflow extends HttpServlet {
 			}
 			
 			if(!queryId.equals("")) {
-				cQueryType="roleflow REGEXP '^[[:digit:]]+,)*" + queryId+ "$'"+" AND ";
+				if(queryType.equals("department")) {
+					cQueryType="roleflow=" + queryId+ " AND ";
+				}else {
+					cQueryType="account_id="+ queryId + " AND ";
+				}
+				
 			}
-			
-			if(queryType.equals("general")) {
-				cCustom="custom = 'f'";
-			}else {
-				cCustom="custom = 't'";
-			}
-			
+				
 			if(!status.equals("3")) {
-				cStatus=" AND "+"status="+status;
+				cStatus="status="+status;
+			}else {
+				cStatus="status<"+4;
 			}
 	
 			if(tense.equals("current")) {
@@ -83,13 +85,12 @@ public class Queryworkflow extends HttpServlet {
 				cDate="date(createtime)>="+cDate;
 			}
 	
-			condition=" WHERE "+cQueryType+cCustom+cStatus+" AND "+cDate+" "+cOrder;
+			condition=" WHERE "+cQueryType + cStatus+" AND "+cDate+" "+cOrder;
 
 			Pagination page = new Pagination(pageNumber, 2, "workflow",condition);
 
 			if (page.getTotal() != 0) {
-				String[] columns = { "id", "name", "account_id", "createtime",
-						"status" };
+				String[] columns = { "id", "name", "account_id", "createtime", "status" };
 				List<ArrayList<Object>> rows = page.getRows(columns);
 				request.setAttribute("rows", rows);
 				request.setAttribute("pageNumber", pageNumber);
@@ -103,7 +104,8 @@ public class Queryworkflow extends HttpServlet {
 			}	
 		}
 		
-		System.out.println(checked);
+		ArrayList<Department> departments=D_Department.doSelectAllDepartment();
+		request.setAttribute("departments", departments);
 		request.setAttribute("checked", checked);
 		String url = "/WEB-INF/backend/queryworkflow.jsp";
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);

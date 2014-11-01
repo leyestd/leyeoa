@@ -6,9 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import rbac.javabean.RbacAccount;
-import rbac.javabean.RbacRole;
 import database.ConnectionPool;
 import database.DBUtil;
 import frontend.javabean.Workflow;
@@ -104,6 +101,7 @@ public class D_Workflow {
 					SimpleDateFormat f=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 					rs.getDate("createtime");
 					workflow.setCreatetime(f.format(rs.getDate("createtime")));
+					workflow.setCustom(rs.getString("custom"));	
 			}
 			
 		} catch (SQLException e) {

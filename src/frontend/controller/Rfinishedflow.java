@@ -41,8 +41,7 @@ public class Rfinishedflow extends HttpServlet {
 		}
 		
 		String url = "/WEB-INF/frontend/rfinishedflow.jsp";
-		RequestDispatcher dispatcher = getServletContext()
-			.getRequestDispatcher(url);
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
 		dispatcher.forward(request, response);
 	}
 

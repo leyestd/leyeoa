@@ -63,7 +63,7 @@ public class Pagination {
 	    String query = "SELECT COUNT(*) AS c FROM " + tableName + where;
 	    
 	    //查看 sql
-	    System.out.println(query);
+	    //System.out.println(query);
 	    
 	    try {
 	    	ps = connection.prepareStatement(query);

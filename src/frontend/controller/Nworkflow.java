@@ -68,7 +68,7 @@ public class Nworkflow extends HttpServlet {
 					roleflow = workflow[workflow.length - 1];
 					for (int i = workflow.length - 2; i >= 0; i--) {
 						// 判断是否有此角色
-						if (rbac.get(accountid).getRole().contains(roles.get(Integer.valueOf(workflow[i])).getName())) {
+						if (rbac.get(accountid).getRole().contains(Integer.valueOf( workflow[i]))) {
 							break;
 						}
 						roleflow = workflow[i] + "," + roleflow;

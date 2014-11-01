@@ -1,10 +1,10 @@
 <%@ include file="/WEB-INF/jspf/frontend/head.jsp"%>
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="java.util.LinkedHashMap,java.util.Set" %>
+<%@page import="java.util.ArrayList"%>
 <%
 	String accountInfo=(String)request.getAttribute("accountInfo");
-	LinkedHashMap<String,String> finishInfo=(LinkedHashMap<String,String>)request.getAttribute("finishInfo");
+	ArrayList<String> finishInfo=(ArrayList<String>)request.getAttribute("finishInfo");
 	int status=(Integer)request.getAttribute("status");
 %>
 <div class="container">
@@ -19,18 +19,25 @@
 		<button type="button" class="btn btn-success">无</button>
 	<%
 	}else {
-		Set<String> accountkey = finishInfo.keySet();
-		for (String key : accountkey) {
+		int count=1;
+		for (String info : finishInfo) {
+			if(count%5 == 0) {
+				%>
+					<button type="button" class="btn btn-default">More..</button>
+				<%
+						break;
+			}
 			if(status==2) {
 				status=0;
 		%>
-			<button type="button" class="btn btn-danger"><%=finishInfo.get(key) %></button>
+			<button type="button" class="btn btn-danger"><%=info %></button>
 		<% 
 			}else {
 		%>
-			<button type="button" class="btn btn-success"><%=finishInfo.get(key) %></button>
+			<button type="button" class="btn btn-success"><%=info %></button>
 		<%
-			}
+			} 
+			count++;
 		}
 	}
 	%>

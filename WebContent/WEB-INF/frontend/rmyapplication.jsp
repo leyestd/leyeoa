@@ -54,7 +54,8 @@
 							}
 							%>
 							</td>
-							<td><a href="detailmyapplication?flowid=<%=row.get(0).toString() %>"><span class="glyphicon glyphicon-pencil">.....</span></a></td>
+							<td><a href="detailmyapplication?flowid=<%=row.get(0).toString() %>"><span class="glyphicon glyphicon-pencil"></span></a>&nbsp;
+							<a data-uname="<%=row.get(0)%>" href="#"><span class="glyphicon glyphicon-remove"></span></a></td>
 						</tr>
 
 						<%

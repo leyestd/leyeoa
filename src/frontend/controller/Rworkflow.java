@@ -11,48 +11,61 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import frontend.dao.D_Delegate;
 import frontend.dao.D_Workflow;
+import frontend.javabean.Delegate;
 import frontend.javabean.Workflow;
 import rbac.javabean.RbacAccount;
-import rbac.javabean.RbacRole;
 import tool.CheckPermission;
 import tool.Pagination;
+
 /**
  * Servlet implementation class Rworkflow
  */
 public class Rworkflow extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 
 		int accountId = (Integer) request.getSession().getAttribute("id");
 		HashMap<Integer, RbacAccount> rbac = (HashMap<Integer, RbacAccount>) getServletContext().getAttribute("rbac");
-		
 
-		//查询所有待审的表单
-		ArrayList<Workflow> workflows= D_Workflow.doSelectReady();
+		// 查询所有待审的表单
+		ArrayList<Workflow> workflows = D_Workflow.doSelectReady();
 
-		StringBuilder readyFor=new StringBuilder();
-		boolean check=false;
+		StringBuilder readyFor = new StringBuilder();
+		boolean check = false;
 		
-		
-		for ( Workflow workflow : workflows) { 
-			check=CheckPermission.doCheckPermisson(workflow, accountId, rbac);
-			if(check) {
+		//委托我的所有用户
+		ArrayList<Delegate> DelegateList = D_Delegate.doSelectDelegate(accountId);
+
+		for (Workflow workflow : workflows) {
+			check = CheckPermission.doCheckPermisson(workflow, accountId, rbac);
+			if (check) {
 				int flowId = workflow.getId();
-				readyFor.append( flowId+",");			
+				readyFor.append(flowId + ",");
+			} else if (DelegateList != null) {
+				for (Delegate delegate : DelegateList) {
+					check = CheckPermission.doCheckPermisson(workflow,delegate.getAccountId(), rbac);
+					if (check) {
+						int flowId = workflow.getId();
+						readyFor.append(flowId + ",");
+						break;
+					}
+				}
 			}
 		}
-		
-		String myReadyFor=null;
-		
+
+		String myReadyFor = null;
+
 		if (readyFor.length() != 0) {
 			myReadyFor = readyFor.toString();
-			myReadyFor = myReadyFor.substring(0,readyFor.length() - 1);
+			myReadyFor = myReadyFor.substring(0, readyFor.length() - 1);
 		}
-		
-		System.out.println(myReadyFor);
-		
+
+		// System.out.println(myReadyFor);
+
 		if (myReadyFor != null) {
 			myReadyFor = " WHERE id IN (" + myReadyFor + ")";
 
@@ -60,11 +73,13 @@ public class Rworkflow extends HttpServlet {
 			if (request.getParameter("pageNumber") == null) {
 				pageNumber = 1;
 			} else {
-				pageNumber = Integer.valueOf(request.getParameter("pageNumber"));
+				pageNumber = Integer
+						.valueOf(request.getParameter("pageNumber"));
 			}
 
-			Pagination page = new Pagination(pageNumber, 2, "workflow",myReadyFor);
-			System.out.println(page.getTotal());
+			Pagination page = new Pagination(pageNumber, 2, "workflow",
+					myReadyFor);
+			// System.out.println(page.getTotal());
 			if (page.getTotal() != 0) {
 				String[] columns = { "id", "name", "account_id", "createtime" };
 				List<ArrayList<Object>> rows = page.getRows(columns);
@@ -78,7 +93,7 @@ public class Rworkflow extends HttpServlet {
 		RequestDispatcher dispatcher = getServletContext()
 				.getRequestDispatcher(url);
 		dispatcher.forward(request, response);
-	
+
 	}
 
 	protected void doPost(HttpServletRequest request,

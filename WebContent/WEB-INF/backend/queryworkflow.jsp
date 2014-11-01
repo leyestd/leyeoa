@@ -4,7 +4,7 @@
 <%@ page
 	import="java.util.Calendar,java.util.ArrayList,java.util.List,java.util.HashMap,rbac.javabean.RbacAccount"%>
 <%@ page
-	import=	"java.util.Set,rbac.javabean.RbacRole" %>
+	import=	"java.util.Set,rbac.javabean.RbacRole,backend.javabean.Department" %>
 
 <div class="container">
 	<!-- Example row of columns -->
@@ -23,11 +23,11 @@
 		</div>
 	
 		<div class="form-group">
-			<label for="mquerytype" class="col-md-4 control-label">流程</label>
+			<label for="mquerytype" class="col-md-4 control-label">方式</label>
 			<div class="col-md-8" id="mquerytype">
 				<select id="flowtype" name="querytype" class="form-control">
-					<option value="general">角色流</option>
-					<option value="custom">自定义流</option>
+					<option value="department">按部门</option>
+					<option value="account">按账户</option>
 				</select>
 			</div>
 		</div>
@@ -50,7 +50,7 @@
 				<select name="year" class="form-control">
 				<%
 				Calendar calendar = Calendar.getInstance();
-					int year=calendar.get(Calendar.YEAR);
+				int year=calendar.get(Calendar.YEAR);
 				
 				%>
 					<option value="<%=year %>"><%=year %>年</option>
@@ -114,23 +114,23 @@
   	<div class="qdivcss" id="droleuser">
 		<ul class="list-unstyled">
 					<%
-						HashMap<Integer,RbacRole> roles=(HashMap<Integer,RbacRole>)application.getAttribute("roles");
-								HashMap<Integer,String> users;
-								Set<Integer> roleskey=roles.keySet();
-								for(Integer key : roleskey) {
+						HashMap<Integer, RbacAccount> rbac = (HashMap<Integer, RbacAccount>) getServletContext().getAttribute("rbac");
+						ArrayList<Department> departments=(ArrayList<Department>)request.getAttribute("departments");
+						for (Department dep : departments) {
 					%>
-						<li data-roleid="<%=key%>"><%=roles.get(key).getAlias()%></li>
+						<li data-depid="<%=dep.getId()  %>"><%=dep.getAlias()%></li>
 						<li>
 							<ul>
 							<%
-								users=(HashMap<Integer,String>)roles.get(key).getUser();
-									              Set<Integer> userskey=users.keySet();
-									              for(Integer userkey : userskey) {
+								Set<Integer> userskey=rbac.keySet();
+								for(Integer userkey : userskey) {
+									if(rbac.get(userkey).getDepartmentId() == dep.getId()) {
 							%>
-				            	  <li data-userid="<%=userkey%>"><%=users.get(userkey)%></li>
-				           <%
-				           	}
-				           %>
+				            	  		<li data-userid="<%=userkey%>"><%=rbac.get(userkey).getFullname() %></li>
+				            <%
+									}
+				           		}
+				            %>
 
 							</ul>
 
@@ -163,8 +163,6 @@
 					</thead>
 					<tbody>
 						<%
-							HashMap<Integer, RbacAccount> rbac = (HashMap<Integer, RbacAccount>) getServletContext()
-									.getAttribute("rbac");
 							List<ArrayList<Object>> rows;
 							rows = (List<ArrayList<Object>>) request.getAttribute("rows");
 							if (rows == null) {
@@ -182,8 +180,7 @@
 							<td><%=row.get(1).toString()%></td>
 							<td><%=rbac.get(Integer.valueOf(row.get(2).toString()))
 							.getFullname()%></td>
-							<td><%=row.get(3).toString()
-							.substring(0, row.get(3).toString().length() - 2)%></td>
+							<td><%=row.get(3).toString().substring(0, row.get(3).toString().length() - 2)%></td>
 							<td>
 								<%
 									if (row.get(4).toString().equals("0")) {
@@ -293,20 +290,20 @@
 	$("#droleuser > ul > li:odd").hide();
 	
 	$("#droleuser > ul > li:even").on("click", function() {
-		$("#flowtype option[value='custom']").removeProp("selected");
-		$("#flowtype option[value='general']").prop("selected",true);
+		$("#flowtype option[value='account']").removeProp("selected");
+		$("#flowtype option[value='department']").prop("selected",true);
 		$("#droleuser > ul > li:odd").hide();
 		$(this).next().show();
 		$("#droleuser > ul > li:even").removeClass("libgcl");
 		$("#droleuser li li").removeClass("libgcl");
 		$(this).addClass("libgcl");
-		$("#mqueryrole").val($(this).data("roleid"));
+		$("#mqueryrole").val($(this).data("depid"));
 	});
 	
 	$("#droleuser li li").on("click", function() {
 
-		$("#flowtype option[value='general']").removeProp("selected");
-		$("#flowtype option[value='custom']").prop("selected", true);
+		$("#flowtype option[value='department']").removeProp("selected");
+		$("#flowtype option[value='account']").prop("selected", true);
 		$("#droleuser li li").removeClass("libgcl");
 		$("#droleuser > ul > li:even").removeClass("libgcl");
 		$(this).addClass("libgcl");

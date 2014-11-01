@@ -47,17 +47,18 @@ public class D_FinishedFlow {
 		return workflow;
 	}
 	
-	public static Workflow doSelectDepartmentDetail(int default_roleid,int flowid) {
+	public static Workflow doSelectDepartmentDetail(int departmentId,int flowid) {
 		ConnectionPool pool = ConnectionPool.getInstance();
 		Connection connection = pool.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		Workflow workflow=null;
-		String query = "SELECT id,name,roleflow,accountflow,content,account_id,createtime,custom,status FROM workflow WHERE roleflow REGEXP '^" + default_roleid + "(,[[:digit:]]+)*$' AND status != 0 AND custom = 'f' and id=?";
+		String query = "SELECT id,name,roleflow,accountflow,content,account_id,createtime,custom,status FROM workflow WHERE roleflow =? AND status != 0 AND custom = 'f' and id=?";
 		
 		try {
 			ps = connection.prepareStatement(query);
-			ps.setInt(1, flowid);
+			ps.setInt(1, departmentId);
+			ps.setInt(2, flowid);
 			rs = ps.executeQuery();
 			if (rs.next()) {
 					workflow=new Workflow();
